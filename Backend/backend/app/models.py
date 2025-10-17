@@ -32,6 +32,7 @@ class Room(models.Model):
     def __str__(self):
         return f"Room {self.room_number} - {self.dormitory.name}"
     
+# BOARDER
 class Boarder(models.Model):
     room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True, blank=True)
     first_name = models.CharField(max_length=50)
