@@ -19,13 +19,13 @@ class Room(models.Model):
     capacity = models.PositiveBigIntegerField()
     
     room_type = models.CharField(max_length=20, choices={
-        ('Single', 'Single')
-        ('Double', 'Double')
+        ('Single', 'Single'),
+        ('Double', 'Double'),
         ('Bedspacers', 'Bedspacers')
     })
     status = models.CharField(max_length=20, choices=[
-        ('Available', 'Available')
-        ('Full', 'Full')
+        ('Available', 'Available'),
+        ('Full', 'Full'),
         ('Maintenance', 'Maintenance')
     ], default='Available')
 
@@ -38,7 +38,7 @@ class Boarder(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     gender = models.CharField(max_length=10, choices=[
-        ('Male', 'Male')
+        ('Male', 'Male'),
         ('Female', 'Female')
     ])
     contact_number = models.CharField(max_length=20)
@@ -68,7 +68,7 @@ class Payment(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date_paid = models.DateTimeField(auto_now_add=True)
     payment_method = models.CharField(max_length=20, choices=[
-        ('GCash', 'GCash')
+        ('GCash', 'GCash'),
         ('Cash', 'Cash')
     ])
     status = models.CharField(max_length=20, choices=[
