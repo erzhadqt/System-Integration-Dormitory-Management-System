@@ -17,13 +17,19 @@ import RoomManagement from "./pages/admin/RoomManagement";
 import SendReminder from "./pages/admin/SendReminder";
 import PaymentManagement from "./pages/admin/PaymentManagement";
 import AddTenant from "./pages/admin/AddTenants";
+import LandingPage from "./pages/LandingPage";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 function App() {
   return (
     <div className="min-h-screen bg-blue-50 text-gray-800">
       <Routes>
-        
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<LandingPage />} />
+        {/* <Route path="/" element={<Navigate to="/login" replace />} /> */}
+
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />

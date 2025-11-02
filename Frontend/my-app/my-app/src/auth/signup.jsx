@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const [formData, setFormData] = useState({
-    fullName: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -21,86 +21,52 @@ function Signup() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-blue-300 via-blue-400 to-blue-500">
-      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md border border-blue-200">
-        <h2 className="text-3xl font-bold text-blue-700 mb-6 text-center">
-          Create Account
+    <div className="h-screen bg-cover bg-center relative " style={{ backgroundImage: "url('/bg-picture7.jpg')" }}>
+      <div className="absolute top-55 left-30 max-w-2xl p-2">
+        <h1 className=" text-5xl text-white font-extrabold">Create Your Account</h1>
+        <p className="text-white font-semibold">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum blanditiis ipsum quasi impedit dolor, vitae molestias asperiores unde corporis maxime excepturi eius modi obcaecati voluptas harum inventore fuga. Accusantium, aspernatur.</p>
+      </div>
+      
+      
+
+      <div className="bg-white shadow-xl float-right min-h-screen p-8 max-w-3xl min-w-lg border border-blue-200">
+        <h2 className="text-3xl font-bold text-blue-700 mb-6 text-center mt-7">
+          Sign Up
         </h2>
 
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Full Name
-            </label>
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              placeholder="Enter your name"
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-            />
+        <form className="space-y-4 p-5">
+          <div className="flex flex-col gap-y-2">
+            <label className="font-bold">Username</label>
+            <input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Username" className="font-semibold outline py-1 px-3" />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email Address
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="you@example.com"
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-            />
+          <div className="flex flex-col gap-y-2">
+            <label className="font-bold">Email</label>
+            <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" className="font-semibold outline py-1 px-3"/>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter your password"
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-            />
+          <div className="flex flex-col gap-y-2">
+            <label className="font-bold">Password</label>
+            <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" className="font-semibold outline py-1 px-3"/>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Enter your current password"
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-            />
+          <div className="flex flex-col gap-y-2">
+            <label className="font-bold">Confirm Password</label>
+            <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm Password" className="font-semibold outline py-1 px-3"/>
           </div>
 
-          <button
-            onClick={handleSubmit}
-            className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 rounded-lg transition-colors mt-4"
-          >
+          <button onClick={handleSubmit} className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 rounded-lg transition-colors mt-4">
             Create Account
           </button>
 
           <p className="text-center text-sm text-gray-700 mt-4">
             Already have an account?{" "}
-            <button
-              onClick={() => navigate("/login")}
-              className="text-blue-700 font-medium hover:underline"
-            >
+            <button onClick={() => navigate("/login")} className="text-blue-700 font-medium hover:underline">
               Log In
             </button>
           </p>
-        </div>
+
+        </form>
       </div>
     </div>
   );
