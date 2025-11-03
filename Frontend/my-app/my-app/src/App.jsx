@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoutes";
 
 import Dashboard from "./pages/dashboard";
 import Profile from "./pages/profile";
@@ -21,6 +22,16 @@ import LandingPage from "./pages/LandingPage";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 
+function Logout() {
+  localStorage.clear()
+  return <Navigate to="/login" />
+}
+
+function RegisterAndLogout() {
+  localStorage.clear()
+  return <Signup />
+}
+
 function App() {
   return (
     <div className="min-h-screen bg-blue-50 text-gray-800">
@@ -32,14 +43,14 @@ function App() {
         <Route path="/contact" element={<Contact />} />
 
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup" element={<RegisterAndLogout />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* Tenants pages */}
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard /> } />
         <Route path="/profile" element={<Profile />} />
         <Route path="/payment" element={<Payment />} />
-        <Route path="/payment-history" element={<PaymentHistory />} />
+        <Route path="/PaymentHistory" element={<PaymentHistory />} />
         <Route path="/roomdetail" element={<RoomDetail />} />
 
         {/* Admin pages */}

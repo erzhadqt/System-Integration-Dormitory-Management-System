@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '../components/Header';
+import Header from '../auth/Header';
 import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
