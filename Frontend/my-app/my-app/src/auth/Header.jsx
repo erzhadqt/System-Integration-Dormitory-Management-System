@@ -13,7 +13,7 @@ const Header = () => {
           Home
         </NavLink>
 
-        <NavLink to="/about" className={({ isActive }) => `text-lg font-semibold hover:underline transition-transform duration-300 hover:-translate-y-1 hover:text-blue-800 text-lg font-semibold ${isActive ? 'underline text-blue-800 ' : ''}`}>
+        <NavLink to="/about" className={({ isActive }) => `text-lg font-semibold hover:underline transition-transform duration-300 hover:-translate-y-1 hover:text-blue-800 ${isActive ? 'underline text-blue-800 ' : ''}`}>
           About
         </NavLink>
 

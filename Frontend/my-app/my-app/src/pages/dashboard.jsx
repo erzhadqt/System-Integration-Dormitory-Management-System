@@ -1,35 +1,32 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import RoomList from "./RoomList";
 
 function Dashboard() {
-  const navigate = useNavigate();
-
-  const roomData = {
-    roomNumber: "A102",
-    type: "Bedspacer",
-    status: "Occupied",
-    occupant: "Juan Dela Cruz",
-  };
-
-  const handleRoomClick = () => {
-    navigate("/roomdetail", { state: roomData });
-  };
-
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-blue-700">Tenant Dashboard</h1>
 
         <div className="flex gap-4">
-          <Link to="/profile" className="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition">
+          <Link
+            to="/profile"
+            className="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition"
+          >
             View Profile
           </Link>
 
-          <Link to="/payment" className="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition">
+          <Link
+            to="/payment"
+            className="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition"
+          >
             Make Payment
           </Link>
 
-          <Link to="/paymenthistory" className="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition">
+          <Link
+            to="/paymenthistory"
+            className="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition"
+          >
             View Payment History
           </Link>
         </div>
@@ -46,17 +43,15 @@ function Dashboard() {
           <p className="text-2xl font-semibold text-blue-600">Oct 30, 2025</p>
         </div>
 
-        <div onClick={handleRoomClick} className="bg-white shadow-md rounded-2xl p-4 border-t-4 border-blue-400 cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-transform duration-200">
+        <div className="bg-white shadow-md rounded-2xl p-4 border-t-4 border-blue-400 cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-transform duration-200">
           <h2 className="text-sm text-gray-500 mb-2">Room Status</h2>
-
-          <p className="text-lg font-semibold text-blue-700">
-            Room {roomData.roomNumber}
-          </p>
-          <p className={`text-sm font-medium mt-1 ${roomData.status === "Occupied" ? "text-green-600" : "text-yellow-600"}`}>
-            {roomData.status}
-          </p>
+          <p className="text-lg font-semibold text-blue-700">Room A102</p>
+          <p className="text-sm font-medium mt-1 text-green-600">Occupied</p>
         </div>
       </div>
+
+      {/* Render RoomList */}
+      <RoomList />
     </div>
   );
 }

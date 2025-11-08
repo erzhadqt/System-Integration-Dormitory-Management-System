@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Form from "../components/Form";
 
 function Signup() {
@@ -22,7 +20,7 @@ function Signup() {
   // };
 
 
-  return <Form route="/app/user/register" method="signup" />
+  return <Form route="app/user/register" method="signup" />
     // <div className="h-screen bg-cover bg-center relative " style={{ backgroundImage: "url('/bg-picture7.jpg')" }}>
     //   <div className="absolute top-55 left-30 max-w-2xl p-2">
     //     <h1 className=" text-5xl text-white font-extrabold">Create Your Account</h1>

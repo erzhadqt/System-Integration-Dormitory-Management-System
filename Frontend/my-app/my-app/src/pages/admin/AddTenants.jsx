@@ -5,6 +5,9 @@ function AddTenants() {
     name: "",
     room: "",
     contact: "",
+    guardianName: "",
+    guardianContact: "",
+    guardianEmail: "",
   });
   const [tenants, setTenants] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -23,7 +26,14 @@ function AddTenants() {
     };
 
     setTenants([...tenants, newTenant]);
-    setFormData({ name: "", room: "", contact: "" });
+    setFormData({
+      name: "",
+      room: "",
+      contact: "",
+      guardianName: "",
+      guardianContact: "",
+      guardianEmail: "",
+    });
     setShowForm(false);
   };
 
@@ -73,6 +83,35 @@ function AddTenants() {
                 className="w-full border p-2 rounded-lg"
                 required
               />
+
+              <input
+                type="text"
+                name="guardianName"
+                value={formData.guardianName}
+                onChange={handleChange}
+                placeholder="Guardian Name"
+                className="w-full border p-2 rounded-lg"
+                required
+              />
+              <input
+                type="text"
+                name="guardianContact"
+                value={formData.guardianContact}
+                onChange={handleChange}
+                placeholder="Guardian Contact Number"
+                className="w-full border p-2 rounded-lg"
+                required
+              />
+              <input
+                type="email"
+                name="guardianEmail"
+                value={formData.guardianEmail}
+                onChange={handleChange}
+                placeholder="Guardian Email"
+                className="w-full border p-2 rounded-lg"
+                required
+              />
+
               <button
                 type="submit"
                 className="bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-sky-700 transition w-full"
@@ -91,6 +130,9 @@ function AddTenants() {
               <th className="text-left p-3 border-b">Tenant Name</th>
               <th className="text-left p-3 border-b">Room</th>
               <th className="text-left p-3 border-b">Contact</th>
+              <th className="text-left p-3 border-b">Guardian Name</th>
+              <th className="text-left p-3 border-b">Guardian Contact</th>
+              <th className="text-left p-3 border-b">Guardian Email</th>
               <th className="text-left p-3 border-b">Joined Date</th>
               <th className="text-left p-3 border-b">Status</th>
             </tr>
@@ -102,6 +144,9 @@ function AddTenants() {
                   <td className="p-3 border-b">{tenant.name}</td>
                   <td className="p-3 border-b">{tenant.room}</td>
                   <td className="p-3 border-b">{tenant.contact}</td>
+                  <td className="p-3 border-b">{tenant.guardianName}</td>
+                  <td className="p-3 border-b">{tenant.guardianContact}</td>
+                  <td className="p-3 border-b">{tenant.guardianEmail}</td>
                   <td className="p-3 border-b">{tenant.joined}</td>
                   <td className="p-3 border-b text-red-500">{tenant.status}</td>
                 </tr>
@@ -109,7 +154,7 @@ function AddTenants() {
             ) : (
               <tr>
                 <td
-                  colSpan="5"
+                  colSpan="8"
                   className="p-3 border-b text-center text-gray-500"
                 >
                   No tenants added yet.

@@ -54,7 +54,7 @@ function App() {
         <Route path="/roomdetail" element={<RoomDetail />} />
 
         {/* Admin pages */}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="rooms" element={<RoomManagement />} />
           <Route path="payments" element={<PaymentManagement />} />

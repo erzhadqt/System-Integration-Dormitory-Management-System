@@ -1,8 +1,9 @@
 import React from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 function AdminLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const menuItems = [
     { name: "Dashboard", path: "/admin/dashboard" },
@@ -31,7 +32,7 @@ function AdminLayout() {
         </nav>
 
         <div className="mt-6">
-          <button className="w-full bg-white text-sky-700 rounded-lg py-2 font-semibold hover:bg-gray-200 transition">
+          <button onClick={() => navigate('/')} className="w-full bg-white text-sky-700 rounded-lg py-2 font-semibold hover:bg-gray-200 transition">
             Logout
           </button>
         </div>

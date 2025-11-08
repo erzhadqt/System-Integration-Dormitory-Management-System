@@ -13,7 +13,7 @@ function Form({route, method}) {
 
 	const name = method === "login" ? "Login" : "Signup"
 
-	const handleSubmit =  async (e) => {
+	const handleSubmit =  async (e) => {	
 		setLoading(true)
 		e.preventDefault()
 
