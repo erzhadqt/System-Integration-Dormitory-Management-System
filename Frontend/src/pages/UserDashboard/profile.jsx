@@ -97,7 +97,7 @@ function Profile() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-linear-to-b from-white to-blue-100 p-6 relative">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-linear-to-br from-slate-900 via-blue-900 to-slate-900 p-6 relative">
       
       {alertMessage && (
         <div className={`absolute top-6 px-6 py-3 rounded-xl shadow-lg text-white text-center transition-all duration-500 ${alertType === "error" ? "bg-red-500" : "bg-green-500"}`}>
@@ -113,7 +113,7 @@ function Profile() {
         My Profile
       </h1>
 
-      <div className="bg-white shadow-lg rounded-2xl p-6 max-w-md w-full text-center border border-blue-200">
+      <div className="backdrop-blur-md bg-white/10 rounded-2xl p-6 max-w-md w-full text-center border border-white/20 shadow-2xl">
         <div className="relative w-32 h-32 mx-auto mb-4">
           <label htmlFor="profileImage" className="cursor-pointer">
             <img src={profile.image || "https://via.placeholder.com/150?text=Profile+Picture"} alt="Profile" className="w-32 h-32 rounded-full object-cover border-4 border-blue-400 hover:opacity-80 transition"/>
@@ -124,7 +124,7 @@ function Profile() {
 
         <div className="space-y-3 text-left">
           <div>
-            <label className="font-semibold text-blue-700">Full Name:</label>
+            <label className="font-semibold text-white">Full Name:</label>
             {isEditing ? (
               <input type="text" name="fullName" value={profile.fullName} onChange={handleChange} className="block w-full border rounded-lg px-3 py-1 mt-1 border-blue-300 focus:ring-2 focus:ring-blue-400"/>
             ) : (
@@ -133,7 +133,7 @@ function Profile() {
           </div>
 
           <div>
-            <label className="font-semibold text-blue-700">Email:</label>
+            <label className="font-semibold text-white">Email:</label>
             {isEditing ? (
               <input type="email" name="email" value={profile.email} onChange={handleChange} className="block w-full border rounded-lg px-3 py-1 mt-1 border-blue-300 focus:ring-2 focus:ring-blue-400"/>
             ) : (
@@ -142,7 +142,7 @@ function Profile() {
           </div>
 
           <div>
-            <label className="font-semibold text-blue-700">Contact:</label>
+            <label className="font-semibold text-white">Contact:</label>
             {isEditing ? (
               <input type="text" name="contact" value={profile.contact} onChange={handleChange} className="block w-full border rounded-lg px-3 py-1 mt-1 border-blue-300 focus:ring-2 focus:ring-blue-400"/>
             ) : (
@@ -151,8 +151,8 @@ function Profile() {
           </div>
 
           <div>
-            <label className="font-semibold text-blue-700">Room Number:</label>
-            <p className="text-gray-700">
+            <label className="font-semibold text-white">Room Number:</label>
+            <p className="text-gray-400">
               {profile.roomNumber || "Not assigned yet"}
             </p>
           </div>
@@ -177,7 +177,7 @@ function Profile() {
 
         {showPasswordForm && (
           <div className="mt-6 text-left">
-            <h2 className="font-semibold text-blue-700 text-lg mb-3">
+            <h2 className="font-semibold text-white text-lg mb-3">
               Change Password
             </h2>
             <div className="space-y-3">

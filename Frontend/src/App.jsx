@@ -2,10 +2,11 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoutes";
 
-import Dashboard from "./pages/dashboard";
-import Profile from "./pages/profile";
-import Payment from "./pages/payment";
-import PaymentHistory from "./pages/PaymentHistory";
+import Dashboard from "./pages/UserDashboard/dashboard";
+import Profile from "./pages/UserDashboard/profile";
+import Payment from "./pages/UserDashboard/payment";
+import PaymentHistory from "./pages/UserDashboard/PaymentHistory";
+import TenantHomepage from "./pages/UserDashboard/TenantHomepage";
 import RoomDetail from "./pages/RoomDetail";
 
 import Login from "./auth/login";
@@ -18,9 +19,9 @@ import RoomManagement from "./pages/admin/RoomManagement";
 import SendReminder from "./pages/admin/SendReminder";
 import PaymentManagement from "./pages/admin/PaymentManagement";
 import AddTenant from "./pages/admin/AddTenants";
-import LandingPage from "./pages/LandingPage";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
+import LandingPage from "./pages/LandingPages/LandingPage";
+import About from "./pages/LandingPages/About";
+import Contact from "./pages/LandingPages/Contact";
 
 function Logout() {
   localStorage.clear()
@@ -34,7 +35,7 @@ function RegisterAndLogout() {
 
 function App() {
   return (
-    <div className="min-h-screen bg-blue-50 text-gray-800">
+    <div className="min-h-screen text-gray-800">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         {/* <Route path="/" element={<Navigate to="/login" replace />} /> */}
@@ -47,6 +48,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* Tenants pages */}
+        <Route path="/tenant-homepage" element={<TenantHomepage /> } />
         <Route path="/dashboard" element={<Dashboard /> } />
         <Route path="/profile" element={<Profile />} />
         <Route path="/payment" element={<Payment />} />

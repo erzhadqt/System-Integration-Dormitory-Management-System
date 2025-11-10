@@ -16,7 +16,7 @@ function PaymentHistory() {
   }, []);
 
   return (
-    <div className="p-6">
+    <div className="h-screen p-6 bg-linear-to-br from-slate-900 via-blue-900 to-slate-900">
      
       <Link to="/dashboard" className="self-start mb-4 text-blue-700 font-semibold hover:underline flex items-center">
         ← Back
@@ -26,13 +26,13 @@ function PaymentHistory() {
         Payment History
       </h1>
 
-      <div className="bg-white shadow-md rounded-2xl p-6 max-w-3xl mx-auto">
+      <div className="border border-white/20 shadow-2xl rounded-2xl p-6 max-w-3xl mx-auto">
         {payments.length === 0 ? (
-          <p className="text-center text-gray-500">No payment records found.</p>
+          <p className="text-center text-white">No payment records found.</p>
         ) : (
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-blue-100 text-blue-700">
+              <tr className="shadow-2xl text-white">
                 <th className="p-3 border">Amount</th>
                 <th className="p-3 border">Date</th>
                 <th className="p-3 border">Status</th>
@@ -40,10 +40,10 @@ function PaymentHistory() {
             </thead>
             <tbody>
               {payments.map((payment, index) => (
-                <tr key={index} className="text-center border-b hover:bg-gray-50">
-                  <td className="p-3 border">₱{payment.amount}</td>
-                  <td className="p-3 border">{payment.date}</td>
-                  <td className={`p-3 border font-semibold ${payment.status === "Pending" ? "text-yellow-600" : "text-green-600"}`}>
+                <tr key={index} className="text-center border-b">
+                  <td className="p-3 border text-white">₱{payment.amount}</td>
+                  <td className="p-3 border text-white">{payment.date}</td>
+                  <td className={`p-3 border text-white font-semibold ${payment.status === "Pending" ? "text-yellow-600" : "text-green-600"}`}>
                     {payment.status}
                   </td>
                 </tr>

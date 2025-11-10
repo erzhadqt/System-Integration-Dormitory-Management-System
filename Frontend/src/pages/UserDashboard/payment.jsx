@@ -23,7 +23,7 @@ function Payment() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-linear-to-br from-slate-900 via-blue-900 to-slate-900">
       <Link to="/dashboard" className="self-start mb-4 text-blue-700 font-semibold hover:underline flex items-center">
         ← Back
       </Link>
@@ -32,12 +32,12 @@ function Payment() {
         Payment
       </h1>
 
-      <div className="bg-white shadow-md rounded-2xl p-6 max-w-2xl mx-auto">
-        <p className="text-gray-600 mb-2">Amount Due:</p>
+      <div className="border border-white/20 shadow-2xl rounded-2xl p-6 max-w-2xl mx-auto">
+        <p className="text-white mb-2">Amount Due:</p>
         <h2 className="text-2xl font-semibold text-blue-600 mb-4">₱3,200</h2>
 
-        <div className="bg-blue-100 rounded-xl p-5 text-center mb-5">
-          <p className="text-gray-600 mb-3">Scan to pay via GCash</p>
+        <div className="border border-white/20 shadow-2xl rounded-xl p-5 text-center mb-5">
+          <p className="text-white mb-3">Scan to pay via GCash</p>
 
           <div className="w-[90%] mx-auto h-[360px] flex items-center justify-center rounded-xl bg-white shadow-inner">
             <img src="/image/qr.jpg" alt="GCash QR Code" className="w-[95%] h-[95%] object-contain cursor-pointer hover:scale-105 transition" onClick={() => alert("Open your GCash app and scan this QR to complete payment.")}
@@ -45,7 +45,7 @@ function Payment() {
           </div>
         </div>
 
-        <p className="text-sm text-gray-500 text-center mb-4">
+        <p className="text-sm text-gray-100 text-center mb-4">
           Open your GCash app → Tap “Pay QR” → Scan this code.
         </p>
 

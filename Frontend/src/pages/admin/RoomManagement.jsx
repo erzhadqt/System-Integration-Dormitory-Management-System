@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FiTrash2 } from "react-icons/fi"; // Add this import
 
 function RoomManagement() {
   const [formData, setFormData] = useState({
@@ -11,9 +12,9 @@ function RoomManagement() {
   });
 
   const [rooms, setRooms] = useState([
-    {roomNumber: "101",type: "Bedspacer",capacity: 4,rent: "₱2,500",tenantName: "John Dela Cruz",status: "Occupied",notes: "Will be available next month",},
-    {roomNumber: "102",type: "Solo",capacity: 1,rent: "₱4,000",tenantName: "-",status: "Available",notes: "Ready for new tenant",},
-    {roomNumber: "103",type: "Bedspacer",capacity: 3,rent: "₱2,200",tenantName: "Maria Santos",status: "Occupied",notes: "Leaving in 3 days",},
+    { roomNumber: "101", type: "Bedspacer", capacity: 4, rent: "₱2,500", tenantName: "John Dela Cruz", status: "Occupied", notes: "Will be available next month" },
+    { roomNumber: "102", type: "Solo", capacity: 1, rent: "₱4,000", tenantName: "-", status: "Available", notes: "Ready for new tenant" },
+    { roomNumber: "103", type: "Bedspacer", capacity: 3, rent: "₱2,200", tenantName: "Maria Santos", status: "Occupied", notes: "Leaving in 3 days" },
   ]);
 
   const [showForm, setShowForm] = useState(false);
@@ -66,6 +67,12 @@ function RoomManagement() {
     updatedRooms[index].notes = noteInput.trim() || "-";
     setRooms(updatedRooms);
     setEditingNoteIndex(null);
+  };
+
+  // New function to delete a room
+  const handleDeleteRoom = (index) => {
+    const updatedRooms = rooms.filter((_, i) => i !== index);
+    setRooms(updatedRooms);
   };
 
   return (
@@ -178,6 +185,7 @@ function RoomManagement() {
               <th className="text-left p-3 border-b">Tenant Name</th>
               <th className="text-left p-3 border-b">Status</th>
               <th className="text-left p-3 border-b">Notes</th>
+              <th className="text-left p-3 border-b">Actions</th> {/* New column for delete */}
             </tr>
           </thead>
           <tbody>
@@ -223,14 +231,21 @@ function RoomManagement() {
                       </span>
                     )}
                   </td>
+
+                  <td className="p-3 border-b">
+                    <button
+                      onClick={() => handleDeleteRoom(i)}
+                      className="text-red-600 hover:text-red-800 transition"
+                      title="Delete Room"
+                    >
+                      <FiTrash2 size={18} />
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td
-                  colSpan="7"
-                  className="p-3 border-b text-center text-gray-500"
-                >
+                <td colSpan="8" className="p-3 border-b text-center text-gray-500">
                   No rooms added yet.
                 </td>
               </tr>

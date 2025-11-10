@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '../auth/Header';
+import Header from '../../components/Header';
 
 const About = () => {
   return (
