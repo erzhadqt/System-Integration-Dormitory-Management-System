@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, status
+from rest_framework.response import Response
 from .serializers import UserSerializer, RoomSerializer, BoarderSerializer, StaffSerializer, PaymentSerializer, NotificationSerializer
 
 from .models import Room, Boarder, Staff, Payment, Notification
@@ -11,6 +12,18 @@ class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+
+# class GoogleAuth(generics.APIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#     permission_classes = [AllowAny]
+#     def post(self, request):
+#         token = request.data.get("token")
+    
+#         if not token:
+#             return Response({"error": "Token Missing"}, status=status.HTTP_404_NOT_FOUND)
+        
+
 
 class RoomListCreate(generics.ListCreateAPIView):
     queryset = Room.objects.all()

@@ -23,9 +23,11 @@ import LandingPage from "./pages/LandingPages/LandingPage";
 import About from "./pages/LandingPages/About";
 import Contact from "./pages/LandingPages/Contact";
 
+import NotFound from "./pages/NotFound";
+
 function Logout() {
   localStorage.clear()
-  return <Navigate to="/login" />
+  return <Navigate to="/" />
 }
 
 function RegisterAndLogout() {
@@ -46,14 +48,16 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<RegisterAndLogout />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/logout" element={<Logout />} />
 
         {/* Tenants pages */}
         <Route path="/tenant-homepage" element={<TenantHomepage /> } />
+        <Route path="/tenant-homepage/:id" element={<RoomDetail /> } />
         <Route path="/dashboard" element={<Dashboard /> } />
         <Route path="/profile" element={<Profile />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/PaymentHistory" element={<PaymentHistory />} />
-        <Route path="/roomdetail" element={<RoomDetail />} />
+        
 
         {/* Admin pages */}
         <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
@@ -63,6 +67,8 @@ function App() {
           <Route path="addtenant" element={<AddTenant />} />
           <Route path="sendreminder" element={<SendReminder />} />
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

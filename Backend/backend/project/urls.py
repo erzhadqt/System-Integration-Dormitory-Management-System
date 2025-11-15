@@ -31,5 +31,6 @@ urlpatterns = [
     path('app/token/refresh', TokenRefreshView.as_view(), name='refresh'),
     path('app-auth/', include('rest_framework.urls')),
     path('app/', include('app.urls')),
+    # path('app/google-auth', GoogleLogin.as_view(), name = 'google-auth')
 
 ]

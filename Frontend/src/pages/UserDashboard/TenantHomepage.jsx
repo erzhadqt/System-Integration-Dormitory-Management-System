@@ -5,12 +5,12 @@ import {FaUser} from "react-icons/fa";
 
 // Sample room data
 const sampleRooms = [
-  { id: 1, name: "Deluxe Suite", type: "single", status: "Full", imagePath: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800" },
-  { id: 2, name: "Standard Room", type: "double", status: "Available", imagePath: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800" },
-  { id: 3, name: "Premium Suite", type: "bedspacers", status: "Full", imagePath: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800" },
-  { id: 4, name: "Economy Room", type: "single", status: "Available", imagePath: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800" },
-  { id: 5, name: "Executive Suite", type: "double", status: "Available", imagePath: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800" },
-  { id: 6, name: "Family Room", type: "bedspacers", status: "Maintenance", imagePath: "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=800" },
+  { id: 1, name: "Room 1", type: "single", status: "Full", imagePath: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800" },
+  { id: 2, name: "Room 2", type: "double", status: "Available", imagePath: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800" },
+  { id: 3, name: "Room 3", type: "bedspacers", status: "Full", imagePath: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800" },
+  { id: 4, name: "Room 4", type: "single", status: "Available", imagePath: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800" },
+  { id: 5, name: "Room 5", type: "double", status: "Available", imagePath: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800" },
+  { id: 6, name: "Room 6", type: "bedspacers", status: "Maintenance", imagePath: "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=800" },
 ];
 
 const TenantHomepage = () => {
@@ -149,12 +149,12 @@ const TenantHomepage = () => {
             </div>
             <h3 className="text-2xl font-bold text-gray-800 mb-2">No rooms found</h3>
             <p className="text-gray-600 mb-6">Try adjusting your search or filter criteria</p>
-            <button
+            {/* <button
               onClick={clearFilters}
               className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
             >
               Clear All Filters
-            </button>
+            </button> */}
           </div>
         )}
 
@@ -201,7 +201,7 @@ const TenantHomepage = () => {
                     </div>
 
                     {/* View Details Button */}
-                    <button className="w-full mt-3 py-2.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl transition-all duration-300 transform group-hover:shadow-lg">
+                    <button onClick={() => navigate(`/room-detail/${id}`)} className="w-full mt-3 py-2.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl transition-all duration-300 transform group-hover:shadow-lg">
                       View Details
                     </button>
                   </div>

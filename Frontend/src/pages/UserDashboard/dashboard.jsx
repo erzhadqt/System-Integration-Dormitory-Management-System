@@ -1,7 +1,8 @@
 import React from 'react';
-import { User, CreditCard, History, Home, Calendar, DollarSign, CheckCircle } from 'lucide-react';
+import { User, CreditCard, History, Home, Calendar, DollarSign, CheckCircle, LogOutIcon } from 'lucide-react';
+import { FaArrowLeft } from 'react-icons/fa';
 
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink, Link } from "react-router-dom"
 
 function Dashboard() {
   return (
@@ -15,6 +16,9 @@ function Dashboard() {
 
       {/* Main Content */}
       <div className="relative z-10 p-4 sm:p-6 lg:p-8">
+        <Link to="/tenant-homepage" className='flex text-white gap-2 pb-5 items-center'>
+          <FaArrowLeft size={24} className='text-white'/> Back
+        </Link>
         
         {/* Header Section */}
         <div className="mb-8">
@@ -44,6 +48,10 @@ function Dashboard() {
                   <NavLink to="/PaymentHistory" className="group flex items-center gap-2 bg-linear-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-5 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
                       <History className="w-5 h-5 group-hover:scale-110 transition-transform" />
                       Payment History
+                  </NavLink>
+
+                  <NavLink to="/logout" className="group flex items-center gap-2 bg-linear-to-r from-red-600 to-red-500 hover:from-red-600 hover:to-red-700 text-black px-5 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                      <LogOutIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
                   </NavLink>
               </div>
             </div>

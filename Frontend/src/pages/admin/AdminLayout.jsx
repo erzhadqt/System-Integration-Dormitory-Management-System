@@ -5,12 +5,18 @@ function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  function Logout() {
+    localStorage.clear()
+    return <Navigate to="/" />
+  }
+
   const menuItems = [
     { name: "Dashboard", path: "/admin/dashboard" },
     { name: "Tenants", path: "/admin/addtenant" },
     { name: "Rooms", path: "/admin/rooms" },
     { name: "Payments", path: "/admin/payments" },
     { name: "Send Reminder", path: "/admin/sendreminder" },
+    { name: "CMS", path: "/admin/cms" },
   ];
 
   return (
@@ -32,7 +38,7 @@ function AdminLayout() {
         </nav>
 
         <div className="mt-6">
-          <button onClick={() => navigate('/')} className="w-full bg-white text-sky-700 rounded-lg py-2 font-semibold hover:bg-gray-200 transition">
+          <button onClick={() => navigate("/logout")} className="w-full bg-white text-sky-700 rounded-lg py-2 font-semibold hover:bg-gray-200 transition">
             Logout
           </button>
         </div>

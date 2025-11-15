@@ -9,6 +9,13 @@ import { useNavigate } from 'react-router-dom'
 const GoogleAuth = () => {
   const navigate = useNavigate()
 
+  // const handleLogin = async (credential) => {
+  //   const token = credential.credential
+  //   const decoded = jwtDecode(token);
+
+  //   const response = await api.post('/app/google-auth/', {refresh: decoded})
+  // }
+
   function handleLogout() {
     googleLogout()
   }

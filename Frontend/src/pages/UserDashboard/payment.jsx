@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 
 function Payment() {
   const navigate = useNavigate();
@@ -24,9 +25,9 @@ function Payment() {
 
   return (
     <div className="p-6 bg-linear-to-br from-slate-900 via-blue-900 to-slate-900">
-      <Link to="/dashboard" className="self-start mb-4 text-blue-700 font-semibold hover:underline flex items-center">
-        ← Back
-      </Link>
+      <Link to="/dashboard" className="flex text-white gap-2 items-center self-start mb-4 font-semibold hover:underline">
+              <FaArrowLeft size={24} className='text-white'/> Back
+            </Link>
 
       <h1 className="text-3xl font-bold text-blue-700 mb-6 text-center">
         Payment
