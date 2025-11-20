@@ -1,10 +1,38 @@
-import React from 'react';
-import { User, CreditCard, History, Home, Calendar, DollarSign, CheckCircle, LogOutIcon } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import api from '../../api';
+import { User, CreditCard, History, Home, Calendar, DollarSign, CheckCircle, LogOutIcon, BellIcon } from 'lucide-react';
 import { FaArrowLeft } from 'react-icons/fa';
 
 import { NavLink, Link } from "react-router-dom"
 
 function Dashboard() {
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  // If Google Login was used, this will exist in localStorage
+  const googleName = localStorage.getItem("given_name");
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await api.get("app/user/");
+
+        // Store username from backend (for normal login)
+        setUsername(response.data.username);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  // Decide which name to display
+  const displayName = googleName ? googleName : username;
+
+
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
       {/* Animated Background Elements */}
@@ -16,9 +44,16 @@ function Dashboard() {
 
       {/* Main Content */}
       <div className="relative z-10 p-4 sm:p-6 lg:p-8">
-        <Link to="/tenant-homepage" className='flex text-white gap-2 pb-5 items-center'>
+        <div className="flex justify-between items-center pb-3">
+          <Link to="/tenant-homepage" className='flex text-white gap-2 pb-5 items-center'>
           <FaArrowLeft size={24} className='text-white'/> Back
         </Link>
+
+        <Link to="/logout" className="flex w-15 items-center gap-2 bg-linear-to-r from-red-600 to-red-500 hover:from-red-600 hover:to-red-700 text-black px-5 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                      <LogOutIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  </Link>
+        </div>
+        
         
         {/* Header Section */}
         <div className="mb-8">
@@ -27,32 +62,36 @@ function Dashboard() {
               
               {/* Title Section */}
               <div>
-                <h1 className="text-4xl sm:text-5xl font-bold text-white mb-2 drop-shadow-lg">
-                  Welcome Back!
+                <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2 drop-shadow-lg">
+                  Welcome Back, <span className="text-zinc-200">{loading ? "..." : (displayName || "User")}!</span>
                 </h1>
                 <p className="text-blue-200 text-lg">Manage your rental account and payments</p>
               </div>
 
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-3">
-                  <NavLink to="/profile" className="group flex items-center gap-2 bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-5 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                  <NavLink to="/profile" className="group flex items-center gap-2 bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-3 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
                       <User className="w-5 h-5 group-hover:scale-110 transition-transform" />
                       Edit Profile
                   </NavLink>
 
-                  <NavLink to="/payment" className="group flex items-center gap-2 bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-5 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                  <NavLink to="/payment" className="group flex items-center gap-2 bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-3 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
                       <CreditCard className="w-5 h-5 group-hover:scale-110 transition-transform" />
                       Make Payment
                   </NavLink>
 
-                  <NavLink to="/PaymentHistory" className="group flex items-center gap-2 bg-linear-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-5 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                  <NavLink to="/PaymentHistory" className="group flex items-center gap-2 bg-linear-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-3 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
                       <History className="w-5 h-5 group-hover:scale-110 transition-transform" />
                       Payment History
                   </NavLink>
 
-                  <NavLink to="/logout" className="group flex items-center gap-2 bg-linear-to-r from-red-600 to-red-500 hover:from-red-600 hover:to-red-700 text-black px-5 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-                      <LogOutIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <NavLink to="/notifications" className="group flex items-center gap-2 bg-linear-to-r from-gray-200 to-white hover:from-gray-200 hover:to-gray-300 text-black px-4 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                      <BellIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
                   </NavLink>
+
+                  {/* <NavLink to="/logout" className="group flex items-center gap-2 bg-linear-to-r from-red-600 to-red-500 hover:from-red-600 hover:to-red-700 text-black px-5 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                      <LogOutIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  </NavLink> */}
               </div>
             </div>
           </div>
@@ -122,54 +161,6 @@ function Dashboard() {
             </p>
           </div>
         </div>
-
-        {/* Quick Actions Section */}
-        {/* <div className="backdrop-blur-md bg-white/10 rounded-3xl border border-white/20 shadow-2xl p-6 sm:p-8">
-          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-            <span className="w-2 h-8 bg-linear-to-b from-blue-400 to-purple-500 rounded-full"></span>
-            Quick Actions
-          </h2>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            
-            <button className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-2xl p-6 text-left transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
-              <div className="p-3 bg-blue-500/20 rounded-xl w-fit mb-4 group-hover:scale-110 transition-transform">
-                <CreditCard className="w-6 h-6 text-blue-400" />
-              </div>
-              <h3 className="text-white font-semibold mb-1">Pay Rent</h3>
-              <p className="text-blue-200 text-sm">Make your monthly payment</p>
-            </button>
-
-            <button className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-2xl p-6 text-left transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
-              <div className="p-3 bg-purple-500/20 rounded-xl w-fit mb-4 group-hover:scale-110 transition-transform">
-                <History className="w-6 h-6 text-purple-400" />
-              </div>
-              <h3 className="text-white font-semibold mb-1">View History</h3>
-              <p className="text-purple-200 text-sm">Check past transactions</p>
-            </button>
-
-            <button className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-2xl p-6 text-left transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
-              <div className="p-3 bg-green-500/20 rounded-xl w-fit mb-4 group-hover:scale-110 transition-transform">
-                <Home className="w-6 h-6 text-green-400" />
-              </div>
-              <h3 className="text-white font-semibold mb-1">Room Details</h3>
-              <p className="text-green-200 text-sm">View your room info</p>
-            </button>
-
-            <button className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-2xl p-6 text-left transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
-              <div className="p-3 bg-pink-500/20 rounded-xl w-fit mb-4 group-hover:scale-110 transition-transform">
-                <User className="w-6 h-6 text-pink-400" />
-              </div>
-              <h3 className="text-white font-semibold mb-1">Update Profile</h3>
-              <p className="text-pink-200 text-sm">Edit your information</p>
-            </button>
-          </div>
-        </div> */}
-
-        {/* Optional: Uncomment RoomList */}
-        {/* <div className="mt-8">
-          <RoomList />
-        </div> */}
       </div>
     </div>
   );

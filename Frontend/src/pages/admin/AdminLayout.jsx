@@ -5,10 +5,10 @@ function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  function Logout() {
-    localStorage.clear()
-    return <Navigate to="/" />
-  }
+  // function Logout() {
+  //   localStorage.clear()
+  //   return <Navigate to="/" />
+  // }
 
   const menuItems = [
     { name: "Dashboard", path: "/admin/dashboard" },

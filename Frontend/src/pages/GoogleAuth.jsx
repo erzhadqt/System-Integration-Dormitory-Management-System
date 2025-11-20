@@ -1,35 +1,60 @@
-// https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbHNtRXVfR2ZsaTNReU5OYjBTU0VDOGtWQmFYQXxBQ3Jtc0tsU0xDMUlfb0hsekI4amF4N2ZwVWIxVDRQLThrd2J1RzhHdzZsYkZFT05VazNybWpacTNUQmRoWWJ6N3Fhai1ROFFqaWh6UjFYZDJETVpoZXIzTXVVbWxoMXE1LTRRM3hEUXVWQUUyMDUtckpKVUV0OA&q=https%3A%2F%2Fgithub.com%2FMomenSherif%2Freact-oauth%2Fissues%2F12&v=GuHN_ZqHExs
-
-import React from 'react'
-import { GoogleLogin, googleLogout } from '@react-oauth/google'
-import { jwtDecode } from 'jwt-decode'
-
-import { useNavigate } from 'react-router-dom'
+import React from "react";
+import { GoogleLogin, googleLogout } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+import api from "../api"; // Make sure you're importing your axios instance
 
 const GoogleAuth = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  // const handleLogin = async (credential) => {
-  //   const token = credential.credential
-  //   const decoded = jwtDecode(token);
+  const handleGoogleLogin = async (credentialResponse) => {
+    try {
+      const googleToken = credentialResponse.credential;
 
-  //   const response = await api.post('/app/google-auth/', {refresh: decoded})
-  // }
+      // Optional: You can decode the token just to inspect user info
+      const decoded = jwtDecode(googleToken);
+      console.log("Google decoded token:", decoded);
 
-  function handleLogout() {
-    googleLogout()
-  }
+      
+
+      // Send Google token to Django for verification & JWT creation
+      const res = await api.post("/app/google-auth", {
+        token: googleToken,
+      });
+
+      console.log("Backend login response:", res.data);
+
+      // Save JWT tokens returned by your Django backend
+      localStorage.setItem("access", res.data.access);
+      localStorage.setItem("refresh", res.data.refresh);
+      localStorage.setItem("username", res.data.username);
+      localStorage.setItem("given_name", res.data.given_name);
+
+      navigate("/tenant-homepage");
+    } catch (error) {
+      console.error("Google Authentication Failed:", error);
+      alert("Authentication failed. Try again.");
+    }
+  };
+
+  // const handleLogout = () => {
+  //   googleLogout();
+  //   localStorage.clear();
+  //   navigate("/");
+  // };
 
   return (
-    <>
-        <GoogleLogin onSuccess={(credentialResponse) => {
-            console.log(credentialResponse)
-            console.log(jwtDecode(credentialResponse.credential))
-            navigate("/tenant-homepage")
-        }} 
-        onError={() => alert("Login Failed")} auto_select={true} theme="outline" shape="pill" size="large" text="signin_with"  width="280"/>
-    </>
-  )
-}
+    <GoogleLogin
+      onSuccess={handleGoogleLogin}
+      onError={() => alert("Google Login Failed")}
+      auto_select={false}
+      theme="outline"
+      shape="pill"
+      size="large"
+      text="signin_with"
+      width="280"
+    />
+  );
+};
 
-export default GoogleAuth
+export default GoogleAuth;

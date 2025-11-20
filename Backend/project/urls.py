@@ -17,20 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from app.views import CreateUserView
+from app.views import CreateUserView, GetUserView, GoogleAuth
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', include(router.urls)),
     
     path('app/user/register', CreateUserView.as_view(), name='register'),
+    path('app/user/', GetUserView.as_view(), name='get_user'),
     path('app/token', TokenObtainPairView.as_view(), name='get_token'),
     path('app/token/refresh', TokenRefreshView.as_view(), name='refresh'),
     path('app-auth/', include('rest_framework.urls')),
+    path('app/google-auth', GoogleAuth.as_view(), name = 'google-auth'),
     path('app/', include('app.urls')),
-    # path('app/google-auth', GoogleLogin.as_view(), name = 'google-auth')
-
 ]
