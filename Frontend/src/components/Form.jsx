@@ -23,15 +23,29 @@ function Form({ route, method }) {
 
     try {
       if (method === "login") {
+        // 1. Perform Login
         const res = await api.post(route, { username, password });
+        
+        // 2. Save Tokens
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        navigate("/tenant-homepage");
+
+        // 3. CHECK USER ROLE (The New Part)
+        // We make a quick call to get the user's details using the token we just saved
+        const userRes = await api.get("app/user/"); 
+        
+        // 4. Redirect based on Role
+        if (userRes.data.is_staff || userRes.data.is_superuser) {
+            // If they are Staff/Admin -> Go to Admin Dashboard
+            navigate("/admin-dashboard/addtenant"); // Change this to your actual Admin route
+        } else {
+            // If they are regular Tenant -> Go to Tenant Homepage
+            navigate("/tenant-homepage");
+        }
+
       } else if (method === "signup") {
+        // ... existing signup logic ...
         const res = await api.post(route, { username, email, password });
-        console.log(res);
-        navigate("/login");
-      } else {
         navigate("/login");
       }
     } catch (error) {

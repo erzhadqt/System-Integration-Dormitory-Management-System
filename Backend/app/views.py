@@ -16,12 +16,10 @@ from google.auth.transport import requests
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from rest_framework.decorators import action
-from django.contrib.auth import get_user_model
 
-User = get_user_model()
 # Create your views here.
 class CreateUserView(generics.CreateAPIView):
-    # queryset = User.objects.all()
+    queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
@@ -57,6 +55,7 @@ class GoogleAuth(APIView):
             username=google_email,
             defaults={"email": google_email, "first_name": given_name},
         )
+
 
         # Generate Django Tokens (JWT)
         refresh = RefreshToken.for_user(user)

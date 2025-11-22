@@ -98,17 +98,6 @@ useEffect(() => {
 
 		fetchTenants()
 	}, [])
-
-	// =========================
-	// TOGGLE STATUS (UI only)
-	// =========================
-//   const handleStatusClick = (index) => {
-//     const updated = [...rooms];
-//     updated[index].status =
-//       updated[index].status === "Available" ? "Full" : "Available";
-//     setRooms(updated);
-//   };
-
 	return (
 		<div className="min-h-auto bg-linear-to-br from-gray-50 to-gray-100">
 			<div className="max-w-7xl mx-auto p-8">
@@ -202,7 +191,7 @@ useEffect(() => {
 														<ul className="list-disc pl-5">
 														{roomBoarders.map((b) => (
 															<li key={b.id} className="text-sm text-gray-600">
-															{b.first_name} {b.last_name}
+															{b.username}
 															</li>
 														))}
 														</ul>

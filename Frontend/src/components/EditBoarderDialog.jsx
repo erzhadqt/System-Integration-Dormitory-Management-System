@@ -21,8 +21,7 @@ export default function EditBoarderDialog({ boarder, onSaved, children }) {
   const [rooms, setRooms] = useState([]);
 
   const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
+    username: "",
     gender: "",
     email: "",
     address: "",
@@ -38,19 +37,21 @@ export default function EditBoarderDialog({ boarder, onSaved, children }) {
   useEffect(() => {
     if (open && boarder) {
       setFormData({
-        name: `${boarder.first_name || ""} ${boarder.last_name || ""}`,
-        gender: boarder.gender || "",
+        username: boarder.username || "",
+        gender: boarder.gender || "Male",
         email: boarder.email || "",
         address: boarder.address || "",
-        room: boarder.room || "",
+        // Handle case where room might be an object (from serializer) or just an ID
+        room: boarder.room?.id || boarder.room || "", 
         contact_number: boarder.contact_number || "",
         guardian_name: boarder.guardian_name || "",
         guardian_contact: boarder.guardian_contact || "",
-        // guardian_email: boarder.guardian_email || "",
       });
 
-      // fetch room list
-      api.get("/app/rooms/").then((res) => setRooms(res.data));
+      // Fetch room list for the dropdown
+      api.get("/app/rooms/")
+        .then((res) => setRooms(res.data))
+        .catch((err) => console.error("Failed to fetch rooms", err));
     }
   }, [open, boarder]);
 
@@ -64,26 +65,32 @@ export default function EditBoarderDialog({ boarder, onSaved, children }) {
     setLoading(true);
 
     try {
+      // Split name back into first and last
+      // const nameParts = formData.name.trim().split(" ");
+      // const firstName = nameParts[0];
+      // const lastName = nameParts.slice(1).join(" ") || "Unknown"; // Fallback if no last name
+
       await api.patch(`/app/boarders/${boarder.id}/`, {
-        first_name: formData.name.split(" ")[0],
-        last_name: formData.name.split(" ").slice(1).join(" "),
+        username: formData.username,
         gender: formData.gender,
         email: formData.email,
         address: formData.address,
-        room: formData.room,
-        contact_number: formData.contact,
+        room: formData.room, // This sends the ID
+        contact_number: formData.contact_number, // Fixed: matches state name
         guardian_name: formData.guardian_name,
         guardian_contact: formData.guardian_contact,
-        // guardian_email: formData.guardian_email,
       });
 
       setLoading(false);
       setOpen(false);
-      onSaved(); // refresh parent table
+      
+      // This triggers the parent's refresh AND the SuccessAlert
+      if (onSaved) onSaved(); 
+
     } catch (err) {
       console.error("Failed to update boarder:", err);
       setLoading(false);
-      alert("Failed to update tenant.");
+      alert("Failed to update tenant. Please check inputs.");
     }
   };
 
@@ -105,9 +112,10 @@ export default function EditBoarderDialog({ boarder, onSaved, children }) {
             <div className="grid gap-2">
               <Label>Full Name</Label>
               <Input
-                name="name"
-                value={formData.name}
+                name="username"
+                value={formData.username}
                 onChange={handleChange}
+                placeholder="e.g. Juan Dela Cruz"
                 required
               />
             </div>
@@ -133,6 +141,7 @@ export default function EditBoarderDialog({ boarder, onSaved, children }) {
               />
             </div>
 
+            {/* Address */}
             <div className="grid gap-2">
               <Label>Address</Label>
               <Input
@@ -151,7 +160,7 @@ export default function EditBoarderDialog({ boarder, onSaved, children }) {
                 name="room"
                 value={formData.room}
                 onChange={handleChange}
-                className="border rounded-md p-2"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 required
               >
                 <option value="">Select Room</option>

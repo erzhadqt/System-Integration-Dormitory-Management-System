@@ -19,8 +19,8 @@ export default function AddBoarderDialog({ onSaved, children }) {
   const [open, setOpen] = useState(false);
 
   const [formData, setFormData] = useState({
-    first_name: "",
-      last_name: "",
+      username: "",
+      password: "",
       gender: "",
       email: "",
       address: "",
@@ -49,8 +49,8 @@ export default function AddBoarderDialog({ onSaved, children }) {
 
   const resetForm = () => {
     setFormData({
-      first_name: "",
-      last_name: "",
+      username: "",
+      password: "",
       gender: "",
       email: "",
       address: "",
@@ -101,26 +101,15 @@ export default function AddBoarderDialog({ onSaved, children }) {
 
             {/* Name */}
             <div className="grid gap-2">
-              <Label>First Name</Label>
+              <Label>Username</Label>
               <Input
                 type="text"
-                name="first_name"
-                value={formData.first_name}
+                name="username"
+                value={formData.username}
                 onChange={handleChange}
                 required
               />
             </div>
-            <div className="grid gap-2">
-              <Label>Last Name</Label>
-              <Input
-                type="text"
-                name="last_name"
-                value={formData.last_name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
             {/* Gender */}
             <div className="grid gap-2">
               <Label>Gender</Label>
@@ -201,6 +190,19 @@ export default function AddBoarderDialog({ onSaved, children }) {
                 name="guardian_contact"
                 value={formData.guardian_contact}
                 onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Password Field */}
+            <div className="grid gap-2">
+              <Label>Assign Password</Label>
+              <Input
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Create login password"
                 required
               />
             </div>

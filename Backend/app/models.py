@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from django.contrib.auth.models import User
     
 # ROOM
 class Room(models.Model):
@@ -26,8 +26,12 @@ class Room(models.Model):
         return f"Room {self.room_number}"
     
 # BOARDER
-class Boarder(AbstractUser):
+class Boarder(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+
     room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True, blank=True, related_name='room')
+    username = models.CharField(max_length=100, null=True, blank=True)
+    email = models.EmailField(unique=True, blank=True)
     gender = models.CharField(max_length=10, choices=[
         ('Male', 'Male'),
         ('Female', 'Female')
@@ -38,7 +42,7 @@ class Boarder(AbstractUser):
     guardian_contact = models.CharField(max_length=20)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return self.username or self.email
 
 #Payment
 class Payment(models.Model):
