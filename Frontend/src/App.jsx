@@ -60,12 +60,11 @@ function App() {
         
 
         {/* Admin pages */}
-        <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="rooms" element={<RoomManagement />} />
-          <Route path="payments" element={<PaymentManagement />} />
-          <Route path="addtenant" element={<AddTenant />} />
-          <Route path="sendreminder" element={<SendReminder />} />
+        <Route path="/admin-dashboard" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+          <Route path="/admin-dashboard/addtenant" element={<AddTenant />} />
+          <Route path="/admin-dashboard/payments" element={<PaymentManagement />} />
+          <Route path="/admin-dashboard/rooms" element={<RoomManagement />} />
+          <Route path="/admin-dashboard/sendreminder" element={<SendReminder />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

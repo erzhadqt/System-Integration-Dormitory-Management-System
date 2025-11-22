@@ -1,260 +1,273 @@
-import React, { useState } from "react";
-import { FiTrash2 } from "react-icons/fi"; // Add this import
+import React, { useState, useEffect } from "react";
+import api from "../../api";
+import { FiTrash2 } from "react-icons/fi";
+import { EditIcon, PlusSquare } from 'lucide-react'
+
+import EditRoomDialog from "../../components/EditRoomDialog";
+import DeleteConfirmDialog from "../../components/DeleteConfirmDialog";
+import SuccessAlert from '../../components/SuccessAlert';
+import AddRoomDialog from "../../components/AddRoomDialog";
 
 function RoomManagement() {
-  const [formData, setFormData] = useState({
-    roomNumber: "",
-    type: "",
-    capacity: "",
-    rent: "",
-    status: "Available",
-    notes: "",
-  });
+	// =========================
+	// STATES
+	// =========================
+	const [rooms, setRooms] = useState([]);
+//   const [dormitories, setDormitories] = useState([]);
+	const [showEditDialog, setShowEditDialog] = useState(false);
+	const [selectedRoom, setSelectedRoom] = useState(null);
+	const [showSuccess, setShowSuccess] = useState(false);
 
-  const [rooms, setRooms] = useState([
-    { roomNumber: "101", type: "Bedspacer", capacity: 4, rent: "₱2,500", tenantName: "John Dela Cruz", status: "Occupied", notes: "Will be available next month" },
-    { roomNumber: "102", type: "Solo", capacity: 1, rent: "₱4,000", tenantName: "-", status: "Available", notes: "Ready for new tenant" },
-    { roomNumber: "103", type: "Bedspacer", capacity: 3, rent: "₱2,200", tenantName: "Maria Santos", status: "Occupied", notes: "Leaving in 3 days" },
-  ]);
+	const [tenants, setTenants] = useState([])
+	
 
-  const [showForm, setShowForm] = useState(false);
-  const [editingNoteIndex, setEditingNoteIndex] = useState(null);
-  const [noteInput, setNoteInput] = useState("");
+	const [formData, setFormData] = useState({
+		room_number: "",
+		price: "",
+		room_type: "",
+		due_date: "",
+		status: "Available",
+	});
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+const fetchRooms = () => {
+	api
+		.get("/app/rooms/")
+		.then((res) => setRooms(res.data))
+		.catch((err) => console.error("Error fetching rooms:", err));
+};
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newRoom = { ...formData, tenantName: "-" };
-    setRooms([...rooms, newRoom]);
-    setFormData({
-      roomNumber: "",
-      type: "",
-      capacity: "",
-      rent: "",
-      status: "Available",
-      notes: "",
-    });
-    setShowForm(false);
-  };
+useEffect(() => {
+	fetchRooms();
+}, []);
 
-  const handleStatusClick = (index) => {
-    const updatedRooms = [...rooms];
-    const currentStatus = updatedRooms[index].status;
-    updatedRooms[index].status =
-      currentStatus === "Available" ? "Occupied" : "Available";
+	const handleChange = (e) => {
+		setFormData({
+			...formData,
+			[e.target.name]: e.target.value,
+		});
+	};
 
-    if (updatedRooms[index].status === "Available") {
-      updatedRooms[index].tenantName = "-";
-    }
+	const handleSubmit = (e) => {
+		e.preventDefault();
 
-    setRooms(updatedRooms);
-  };
+		api
+			.post("app/rooms/", formData)
+			.then((res) => {
+				setRooms([...rooms, res.data]);
+				setFormData({
+					room_number: "",
+					price: "",
+					room_type: "",
+					due_date: "",
+					status: "Available",
+					boaders: ''
+				});
+			})
+			.catch((err) => {
+				console.error("Error adding room:", err);
+			});
+	};
 
-  const handleNoteClick = (index, currentNote) => {
-    setEditingNoteIndex(index);
-    setNoteInput(currentNote);
-  };
+	const handleDeleteRoom = (id) => {
+	api
+		.delete(`app/rooms/${id}/`)
+		.then(() => {
+			setRooms(rooms.filter((room) => room.id !== id));
+			handleShowSuccess(); // Show success alert after deletion
+		})
+		.catch((err) => console.error("Error deleting room:", err));
+};
 
-  const handleNoteChange = (e) => {
-    setNoteInput(e.target.value);
-  };
+	const handleEditClick = (room) => {
+		setSelectedRoom(room);
+		setShowEditDialog(true);
+	
+	};
+	const handleShowSuccess = () => {
+	setShowSuccess(true);
+	setTimeout(() => setShowSuccess(false), 2500); // Hide after 2.5 seconds
+	};
 
-  const handleNoteSave = (index) => {
-    const updatedRooms = [...rooms];
-    updatedRooms[index].notes = noteInput.trim() || "-";
-    setRooms(updatedRooms);
-    setEditingNoteIndex(null);
-  };
+	useEffect(() => {
+		
+		const fetchTenants = async () => {
+			const response = await api.get('app/boarders/')
+			setTenants(response.data)
+			console.log("Tenants: ", response.data)
+		}
 
-  // New function to delete a room
-  const handleDeleteRoom = (index) => {
-    const updatedRooms = rooms.filter((_, i) => i !== index);
-    setRooms(updatedRooms);
-  };
+		fetchTenants()
+	}, [])
 
-  return (
-    <div className="p-6 min-h-screen bg-blue-50">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold text-sky-700">Rooms</h2>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-sky-700 transition"
-        >
-          {showForm ? "Close Form" : "Add Room"}
-        </button>
-      </div>
+	// =========================
+	// TOGGLE STATUS (UI only)
+	// =========================
+//   const handleStatusClick = (index) => {
+//     const updated = [...rooms];
+//     updated[index].status =
+//       updated[index].status === "Available" ? "Full" : "Available";
+//     setRooms(updated);
+//   };
 
-      {showForm && (
-        <div className="flex justify-center mb-6">
-          <div className="bg-white p-6 rounded-2xl shadow-md w-full max-w-md relative">
-            <button
-              className="absolute top-2 right-3 text-gray-500 font-bold text-xl"
-              onClick={() => setShowForm(false)}
-            >
-              ×
-            </button>
+	return (
+		<div className="min-h-auto bg-linear-to-br from-gray-50 to-gray-100">
+			<div className="max-w-7xl mx-auto p-8">
+				<div className="mb-8">
+					<div className="flex justify-between items-center">
+						<div>
+							<h2 className="text-3xl font-bold text-gray-900 tracking-tight">Room Management</h2>
+						</div>
 
-            <h2 className="text-2xl font-semibold text-sky-700 mb-4 text-center">
-              Add Room
-            </h2>
+						<AddRoomDialog
+							onSaved={() => {
+								fetchRooms();
+								handleShowSuccess();
+							}}
+						>
+							<button className="flex items-center gap-2 bg-blue-700 text-white px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-sm hover:shadow-md font-medium">
+								<PlusSquare size={22} />
+								Room
+							</button>
+						</AddRoomDialog>
+					</div>
+				</div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <input
-                type="text"
-                name="roomNumber"
-                value={formData.roomNumber}
-                onChange={handleChange}
-                placeholder="Room Number"
-                className="w-full border p-2 rounded-lg"
-                required
-              />
+				{showSuccess && (
+					<div className="mb-6 animate-in fade-in slide-in-from-top-2 duration-300">
+						<SuccessAlert />
+					</div>
+				)}
 
-              <select
-                name="type"
-                value={formData.type}
-                onChange={handleChange}
-                className="w-full border p-2 rounded-lg"
-                required
-              >
-                <option value="">Select Room Type</option>
-                <option value="Bedspacer">Bedspacer</option>
-                <option value="Solo">Solo</option>
-              </select>
+				<div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+					<div className="overflow-x-auto">
+						<table className="min-w-full divide-y divide-gray-200">
+							<thead>
+								<tr className="bg-gray-50">
+									<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+										Room Number
+									</th>
+									<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+										Price
+									</th>
+									<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+										Type
+									</th>
+									<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+										Due Date
+									</th>
+									<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+										Status
+									</th> 
+									<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+										Boarders
+									</th>
+									<th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+										Actions
+									</th>
+								</tr>
+							</thead>
 
-              <input
-                type="number"
-                name="capacity"
-                value={formData.capacity}
-                onChange={handleChange}
-                placeholder="Capacity"
-                className="w-full border p-2 rounded-lg"
-                required
-              />
+							<tbody className="divide-y divide-gray-200 bg-white">
+								{rooms.length > 0 ? (
+									
+									rooms.map((room) => {
+										const roomBoarders = tenants.filter((t) => t.room_number === room.room_number);
+										return (
+											<tr key={room.id} className="hover:bg-gray-50 transition-colors duration-150">
+												<td className="px-6 py-4 whitespace-nowrap">
+													<span className="text-sm font-medium text-gray-900">{room.room_number}</span>
+												</td>
+												<td className="px-6 py-4 whitespace-nowrap">
+													<span className="text-sm font-medium text-gray-900">₱ {room.price}</span>
+												</td>
+												<td className="px-6 py-4 whitespace-nowrap">
+													<span className="text-sm text-gray-600">{room.room_type}</span>
+												</td>
+												<td className="px-6 py-4 whitespace-nowrap">
+													<span className="text-sm text-gray-600">{room.due_date}</span>
+												</td>
+												<td className="px-6 py-4 whitespace-nowrap">
+													<span
+														className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
+															room.status === "Available"
+																? "bg-green-50 text-green-700 border border-green-200"
+																: "bg-red-50 text-red-700 border border-red-200"
+														}`}
+													>
+														{room.status}
+													</span>
+												</td>
+												<td className="px-6 py-4 whitespace-nowrap">
+													{roomBoarders.length > 0 ? (
+														<ul className="list-disc pl-5">
+														{roomBoarders.map((b) => (
+															<li key={b.id} className="text-sm text-gray-600">
+															{b.first_name} {b.last_name}
+															</li>
+														))}
+														</ul>
+													) : (
+														<span className="text-sm text-gray-400">No boarders</span>
+													)}
+												</td>
 
-              <input
-                type="text"
-                name="rent"
-                value={formData.rent}
-                onChange={handleChange}
-                placeholder="Monthly Rent (₱)"
-                className="w-full border p-2 rounded-lg"
-                required
-              />
+												<td className="px-6 py-4 whitespace-nowrap">
+													<div className="flex items-center gap-3">
+														<button
+															onClick={() => handleEditClick(room)}
+															className="p-2 text-green-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all duration-200"
+															title="Edit room"
+														>
+															<EditIcon size={22} />
+														</button>
 
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="w-full border p-2 rounded-lg"
-              >
-                <option value="Available">Available</option>
-                <option value="Occupied">Occupied</option>
-              </select>
-
-              <input
-                type="text"
-                name="notes"
-                value={formData.notes}
-                onChange={handleChange}
-                placeholder="Notes"
-                className="w-full border p-2 rounded-lg"
-              />
-
-              <button
-                type="submit"
-                className="bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-sky-700 transition w-full"
-              >
-                Save Room
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-
-      <div className="overflow-x-auto">
-        <table className="min-w-full border border-gray-200 rounded-lg bg-white">
-          <thead className="bg-sky-50">
-            <tr>
-              <th className="text-left p-3 border-b">Room Number</th>
-              <th className="text-left p-3 border-b">Type</th>
-              <th className="text-left p-3 border-b">Capacity</th>
-              <th className="text-left p-3 border-b">Rent (₱)</th>
-              <th className="text-left p-3 border-b">Tenant Name</th>
-              <th className="text-left p-3 border-b">Status</th>
-              <th className="text-left p-3 border-b">Notes</th>
-              <th className="text-left p-3 border-b">Actions</th> {/* New column for delete */}
-            </tr>
-          </thead>
-          <tbody>
-            {rooms.length > 0 ? (
-              rooms.map((room, i) => (
-                <tr key={i} className="hover:bg-gray-50">
-                  <td className="p-3 border-b">{room.roomNumber}</td>
-                  <td className="p-3 border-b">{room.type}</td>
-                  <td className="p-3 border-b">{room.capacity}</td>
-                  <td className="p-3 border-b">{room.rent}</td>
-                  <td className="p-3 border-b">{room.tenantName}</td>
-
-                  <td
-                    onClick={() => handleStatusClick(i)}
-                    className={`p-3 border-b font-medium cursor-pointer ${
-                      room.status === "Available"
-                        ? "text-green-600"
-                        : "text-red-600"
-                    }`}
-                  >
-                    {room.status}
-                  </td>
-
-                  <td className="p-3 border-b">
-                    {editingNoteIndex === i ? (
-                      <input
-                        type="text"
-                        value={noteInput}
-                        onChange={handleNoteChange}
-                        onBlur={() => handleNoteSave(i)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") handleNoteSave(i);
-                        }}
-                        className="border p-1 rounded w-full"
-                        autoFocus
-                      />
-                    ) : (
-                      <span
-                        onClick={() => handleNoteClick(i, room.notes)}
-                        className="cursor-pointer text-gray-700 hover:text-sky-600"
-                      >
-                        {room.notes || "-"}
-                      </span>
-                    )}
-                  </td>
-
-                  <td className="p-3 border-b">
-                    <button
-                      onClick={() => handleDeleteRoom(i)}
-                      className="text-red-600 hover:text-red-800 transition"
-                      title="Delete Room"
-                    >
-                      <FiTrash2 size={18} />
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="8" className="p-3 border-b text-center text-gray-500">
-                  No rooms added yet.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+														<DeleteConfirmDialog
+															onConfirm={() => handleDeleteRoom(room.id)}
+															title="Delete Room"
+															description="Are you sure you want to delete this room? This cannot be undone."
+														>
+															<button
+																className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
+																title="Delete room"
+															>
+																<FiTrash2 size={18} />
+															</button>
+														</DeleteConfirmDialog>
+													</div>
+												</td>
+											</tr>
+										)
+									}
+										
+										
+									)  
+								) : (
+									<tr>
+										<td colSpan="6" className="px-6 py-12 text-center">
+											<div className="flex flex-col items-center justify-center">
+												<div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+													<PlusSquare size={32} className="text-gray-400" />
+												</div>
+												<p className="text-gray-500 font-medium">No rooms added yet</p>
+												<p className="text-sm text-gray-400 mt-1">Get started by adding your first room</p>
+											</div>
+										</td>
+									</tr>
+								)}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			{showEditDialog && selectedRoom && (
+				<EditRoomDialog
+					room={selectedRoom}
+					onClose={() => setShowEditDialog(false)}
+					onSaved={fetchRooms}
+				/>
+			)}
+		</div>
+	);
 }
 
 export default RoomManagement;

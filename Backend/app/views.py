@@ -1,11 +1,13 @@
 from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from django.contrib.auth.models import User
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import UserSerializer, RoomSerializer, BoarderSerializer, StaffSerializer, PaymentSerializer, NotificationSerializer
+from .serializers import UserSerializer, RoomSerializer, BoarderSerializer, PaymentSerializer, NotificationSerializer
 
-from .models import Room, Boarder, Staff, Payment, Notification
+from .models import Room, Boarder, Payment, Notification
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 
 from google.oauth2 import id_token
@@ -13,9 +15,13 @@ from google.auth.transport import requests
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from rest_framework.decorators import action
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 # Create your views here.
 class CreateUserView(generics.CreateAPIView):
-    queryset = User.objects.all()
+    # queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
@@ -63,39 +69,53 @@ class GoogleAuth(APIView):
             "email": user.email,
             "given_name": user.first_name,
         })
-        
 
+class CurrentBoarderViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
 
-class RoomListCreate(generics.ListCreateAPIView):
-    queryset = Room.objects.all()
-    serializer_class = RoomSerializer
-    permission_classes = [IsAdminUser]
+    @action(detail=False, methods=['get'])
+    def me(self, request):
+        """
+        Returns the logged-in boarder info with nested room details.
+        """
+        try:
+            boarder = Boarder.objects.get(email=request.user.email)
+            serializer = BoarderSerializer(boarder)
+            return Response(serializer.data)
+        except Boarder.DoesNotExist:
+            return Response({"detail": "Boarder not found"}, status=404)
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
-class RoomDelete(generics.DestroyAPIView):
-    queryset = Room.objects.all()
-    serializer_class = RoomSerializer
-    permission_classes = [IsAdminUser]
-
-    def perform_create(self, serializer):
-        serializer.delete(author=self.request.user)
+    @action(detail=False, methods=['get'])
+    def payments(self, request):
+        """
+        Returns the payments of the logged-in boarder.
+        """
+        try:
+            boarder = Boarder.objects.get(email=request.user.email)
+            payments = Payment.objects.filter(boarder=boarder)
+            serializer = PaymentSerializer(payments, many=True)
+            return Response(serializer.data)
+        except Boarder.DoesNotExist:
+            return Response({"detail": "Boarder not found"}, status=404)
 
 class RoomViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
+
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ['room_number']
+    filterset_fields = ['room_type']
 
 class BoarderViewSet(viewsets.ModelViewSet):
     queryset = Boarder.objects.all()
     serializer_class = BoarderSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
-class StaffViewSet(viewsets.ModelViewSet):
-    queryset = Staff.objects.all()
-    serializer_class = StaffSerializer
-    permission_classes = [IsAuthenticated]
+# class StaffViewSet(viewsets.ModelViewSet):
+#     queryset = Staff.objects.all()
+#     serializer_class = StaffSerializer
+#     permission_classes = [IsAuthenticated]
 
 class PaymentViewSet(viewsets.ModelViewSet):
     queryset = Payment.objects.all()

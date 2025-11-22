@@ -1,22 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import api from "../../api"; // Adjust path to your API module
 
 function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [tenants, setTenants] = useState([]);
+  const [totalRooms, setTotalRooms] = useState(0);
+  const [roomPrice, setRoomPrice] = useState(0);
+  const [dueDate, setDueDate] = useState(null);
 
-  const tenants = [
-    { name: "Juan Dela Cruz", room: "101", due: "₱2,000", joined: "Nov 5, 2025", status: "Pending" },
-    { name: "Maria Santos", room: "202", due: "₱2,000", joined: "Nov 6, 2025", status: "Pending" },
-    { name: "Pedro Reyes", room: "303", due: "₱2,500", joined: "Nov 7, 2025", status: "Pending" },
-    { name: "Julia Ramos", room: "404", due: "₱3,000", joined: "Nov 8, 2025", status: "Pending" },
-    { name: "Jerome Dizon", room: "505", due: "₱2,800", joined: "Nov 9, 2025", status: "Pending" },
-  ];
+  // Fetch tenants and rooms on component mount
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
 
+  const fetchDashboardData = async () => {
+  try {
+    const tenantsRes = await api.get("/app/boarders/");
+    setTenants(tenantsRes.data);
+
+    const roomsRes = await api.get("/app/rooms/");
+    setTotalRooms(roomsRes.data.length);
+
+    // Build lookup table
+    const priceMap = {};
+    roomsRes.data.forEach(room => {
+      priceMap[room.id] = room.price; // OR room.room_price
+    });
+    setRoomPrice(priceMap);
+  } catch (err) {
+    console.error("Error fetching dashboard data:", err);
+  }
+};
+
+// const totalCollection = tenants.reduce((sum, t) => {
+//   return sum + (roomPrice[t.room]);
+// }, 0);
   const filteredTenants = tenants.filter((tenant) =>
-    tenant.name.toLowerCase().includes(searchTerm.toLowerCase())
+    tenant.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    tenant.last_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen p-6">
       <h1 className="text-3xl font-bold text-sky-700 mb-6">Dashboard</h1>
 
       <div className="mb-6">
@@ -36,11 +61,11 @@ function AdminDashboard() {
         </div>
         <div className="bg-white shadow-md rounded-xl p-5 text-center hover:shadow-lg transition">
           <h3 className="text-sky-700 text-lg font-semibold">Total Rooms</h3>
-          <p className="text-3xl font-bold mt-2 text-gray-800">15</p>
+          <p className="text-3xl font-bold mt-2 text-gray-800">{totalRooms}</p>
         </div>
         <div className="bg-white shadow-md rounded-xl p-5 text-center hover:shadow-lg transition">
           <h3 className="text-sky-700 text-lg font-semibold">Collected This Month</h3>
-          <p className="text-3xl font-bold mt-2 text-gray-800">₱28,000</p>
+          <p className="text-3xl font-bold mt-2 text-gray-800">₱</p>
         </div>
       </section>
 
@@ -53,17 +78,17 @@ function AdminDashboard() {
                 <th className="text-left p-3 border-b">Tenant Name</th>
                 <th className="text-left p-3 border-b">Room</th>
                 <th className="text-left p-3 border-b">Amount Due</th>
-                <th className="text-left p-3 border-b">Joined Date</th>
+                <th className="text-left p-3 border-b">Due Date</th>
                 <th className="text-left p-3 border-b">Status</th>
               </tr>
             </thead>
             <tbody>
               {filteredTenants.length > 0 ? (
-                filteredTenants.map((tenant, i) => (
-                  <tr key={i} className="hover:bg-gray-50">
-                    <td className="p-3 border-b">{tenant.name}</td>
-                    <td className="p-3 border-b">{tenant.room}</td>
-                    <td className="p-3 border-b">{tenant.due}</td>
+                filteredTenants.map((tenant) => (
+                  <tr key={tenant.id} className="hover:bg-gray-50">
+                    <td className="p-3 border-b">{tenant.first_name} {tenant.last_name}</td>
+                    <td className="p-3 border-b">{tenant.room_number}</td>
+                    <td className="p-3 border-b">₱{roomPrice[tenant.room] || "0"}</td>
                     <td className="p-3 border-b">{tenant.joined}</td>
                     <td className="p-3 border-b text-red-500">{tenant.status}</td>
                   </tr>

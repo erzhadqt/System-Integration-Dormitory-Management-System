@@ -5,7 +5,12 @@ import { FaArrowLeft } from 'react-icons/fa';
 
 import { NavLink, Link } from "react-router-dom"
 
+import LogoutAlertDialog from '../../components/LogoutAlertDialog';
+import { useAuth } from '../../context/AuthContext';
+
 function Dashboard() {
+  const { logout } = useAuth();
+
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -49,9 +54,12 @@ function Dashboard() {
           <FaArrowLeft size={24} className='text-white'/> Back
         </Link>
 
-        <Link to="/logout" className="flex w-15 items-center gap-2 bg-linear-to-r from-red-600 to-red-500 hover:from-red-600 hover:to-red-700 text-black px-5 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-                      <LogOutIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  </Link>
+        <LogoutAlertDialog onConfirm={logout}>
+          <button className="flex w-15 items-center gap-2 bg-linear-to-r from-red-600 to-red-500 hover:from-red-600 hover:to-red-700 text-black px-5 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+            <LogOutIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+          </button>
+        </LogoutAlertDialog>
+        
         </div>
         
         
