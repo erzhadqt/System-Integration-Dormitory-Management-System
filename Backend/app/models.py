@@ -49,15 +49,20 @@ class Payment(models.Model):
     boarder = models.ForeignKey(Boarder, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date_paid = models.DateTimeField(auto_now_add=True)
+    
     payment_method = models.CharField(max_length=20, choices=[
-        ('GCash', 'GCash'),
+        ('PayPal', 'PayPal'),
         ('Cash', 'Cash')
-    ])
+    ], default='PayPal')
+    
     status = models.CharField(max_length=20, choices=[
         ('Pending', 'Pending'),
         ('Completed', 'Completed'),
         ('Failed', 'Failed')
     ], default='Pending')
+
+    # Field to store the PayPal ID (e.g., "5WA32...")
+    transaction_id = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return f"{self.boarder} - {self.amount}"

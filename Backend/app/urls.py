@@ -1,6 +1,6 @@
 from django.urls import path, include
 from . import views
-from .views import RoomViewSet, BoarderViewSet, PaymentViewSet, NotificationViewSet, CurrentBoarderViewSet
+from .views import RoomViewSet, BoarderViewSet, PaymentViewSet, NotificationViewSet, CurrentBoarderViewSet, PayPalSuccessView
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -14,4 +14,7 @@ router.register(r'current-boarder', CurrentBoarderViewSet, basename='current-boa
 
 urlpatterns = [
     path('', include(router.urls)),
+
+    path('paypal/success/', PayPalSuccessView.as_view(), name='paypal-success'),
+    path('cash/request/', views.CashPaymentRequestView.as_view(), name='cash-request'), 
 ]

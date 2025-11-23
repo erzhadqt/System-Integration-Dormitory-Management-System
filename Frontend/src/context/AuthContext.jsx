@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       // OPTIONAL: notify backend
-      await api.post("/api/logout/", {}, {
+      await api.post("/logout/", {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         }

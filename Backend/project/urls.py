@@ -19,7 +19,9 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from app.views import CreateUserView, GetUserView, GoogleAuth
+from app.views import CreateUserView, GetUserView, GoogleAuth, PayPalSuccessView, CashPaymentRequestView
+
+
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
@@ -33,7 +35,9 @@ urlpatterns = [
     path('app/token/refresh', TokenRefreshView.as_view(), name='refresh'),
     path('app-auth/', include('rest_framework.urls')),
     path('app/google-auth', GoogleAuth.as_view(), name = 'google-auth'),
+
     path('app/', include('app.urls')),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

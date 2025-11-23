@@ -45,6 +45,19 @@ function Payment() {
     }
   };
 
+  const handleApprovePayment = async (paymentId) => {
+    try {
+        await api.patch(`/app/payment/${paymentId}/`, {
+            status: 'Completed'
+        });
+        alert("Payment Approved!");
+        fetchAllData(); // Refresh table
+    } catch (err) {
+        console.error("Error approving payment:", err);
+        alert("Failed to approve payment");
+    }
+  };
+
   // ---------------------------------
   // MERGE PAYMENT + BOARDER + ROOM
   // ---------------------------------
@@ -258,83 +271,43 @@ function Payment() {
                 <td className="py-3 px-4">{p.roomNumber}</td>
                 <td className="py-3 px-4">{p.roomType}</td>
                 <td className="py-3 px-4">{p.rent.toLocaleString()}</td>
-                <td className="py-3 px-4">{p.dueDate}</td>
+                <td className="py-3 px-4">{new Date(p.date_paid).toLocaleDateString()} / {p.dueDate}</td>
 
                 {/* Status */}
                 <td className="py-3 px-4">
-                  {editingIndex === index ? (
-                    <select
-                      value={p.status}
-                      onChange={(e) =>
-                        setPayments((prev) =>
-                          prev.map((x, i) =>
-                            i === index ? { ...x, status: e.target.value } : x
-                          )
-                        )
-                      }
-                      className="border rounded p-1"
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="Completed">Completed</option>
-                      <option value="Failed">Failed</option>
-                    </select>
-                  ) : (
-                    <span
-                      className={`font-semibold ${
-                        p.status === "Completed"
-                          ? "text-green-600"
-                          : p.status === "Pending"
-                          ? "text-yellow-600"
-                          : "text-red-600"
-                      }`}
-                    >
+                  <span className={`px-2 py-1 rounded text-xs font-bold ${
+                      p.status === 'Completed' ? 'bg-green-100 text-green-800' : 
+                      p.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'
+                  }`}>
                       {p.status}
-                    </span>
-                  )}
-                </td>
+                  </span>
+              </td>
 
                 {/* Method */}
                 <td className="py-3 px-4">
-                  {editingIndex === index ? (
-                    <select
-                      value={p.payment_method}
-                      onChange={(e) =>
-                        setPayments((prev) =>
-                          prev.map((x, i) =>
-                            i === index
-                              ? { ...x, payment_method: e.target.value }
-                              : x
-                          )
-                        )
-                      }
-                      className="border rounded p-1"
-                    >
-                      <option value="GCash">GCash</option>
-                      <option value="Cash">Cash</option>
-                    </select>
-                  ) : (
-                    p.payment_method
-                  )}
-                </td>
+                  <span className={`px-2 py-1 rounded text-xs font-bold ${
+                      p.payment_method === 'PayPal' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
+                  }`}>
+                      {p.payment_method}
+                  </span>
+              </td>
 
                 {/* Action */}
                 <td className="py-3 px-4">
-                  {editingIndex === index ? (
-                    <button
-                      onClick={() => handleSave(index, p)}
-                      className="bg-green-600 text-white px-3 py-1 rounded"
-                    >
-                      Save
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => setEditingIndex(index)}
-                      className="bg-blue-600 text-white px-3 py-1 rounded"
-                    >
-                      Edit
-                    </button>
-                  )}
-                </td>
+      {p.status === 'Pending' && (
+        <button
+          onClick={() => handleApprovePayment(p.id)}
+          className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm shadow mr-2"
+        >
+          Approve
+        </button>
+      )}
+      
+      {/* Keep your existing Edit logic if you want, or replace it */}
+      {/* <button className="text-gray-500 hover:text-blue-600">
+        Edit
+      </button> */}
+    </td>
               </tr>
             ))}
           </tbody>
