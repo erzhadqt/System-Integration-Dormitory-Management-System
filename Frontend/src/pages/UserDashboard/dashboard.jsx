@@ -75,7 +75,7 @@ function dashboard() {
             </div>
 
             <div className="flex items-center gap-4">
-                <button onClick={() => navigate('/paymentHistory')} className="flex gap-1 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all relative">
+                <button onClick={() => navigate('/user-PaymentHistory')} className="flex gap-1 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all relative">
                     <HistoryIcon className="w-6 h-6" />
                     Payment History
                     <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-slate-900"></span>
@@ -101,7 +101,7 @@ function dashboard() {
             <p className="text-blue-200 text-lg">Here is your account overview.</p>
             
             <div className="flex flex-wrap gap-4 mt-6">
-               <NavLink to="/profile" className="px-6 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-all shadow-lg hover:shadow-blue-500/50 flex items-center gap-2">
+               <NavLink to="/user-profile" className="px-6 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-all shadow-lg hover:shadow-blue-500/50 flex items-center gap-2">
                  <User className="w-5 h-5" /> My Profile
                </NavLink>
             </div>

@@ -84,7 +84,7 @@ function Profile() {
         
         {/* LEFT SIDE: Avatar & Basic Info */}
         <div className="md:w-1/3 bg-blue-600/20 p-8 flex flex-col items-center justify-center border-r border-white/10 relative">
-          <Link to="/dashboard" className="absolute top-6 left-6 text-blue-200 hover:text-white transition-colors flex items-center gap-2">
+          <Link to="/user-dashboard" className="absolute top-6 left-6 text-blue-200 hover:text-white transition-colors flex items-center gap-2">
              <FaArrowLeft /> Back
           </Link>
 

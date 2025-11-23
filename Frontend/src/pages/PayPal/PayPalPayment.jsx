@@ -27,10 +27,12 @@ export default function PayPalPayment({ amount, onSuccess }) {
     });
   };
 
+  const clientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
+
   return (
     <div className="w-full max-w-md mx-auto p-4">
       {/* "sb" stands for Sandbox (Test Mode). Replace with your Client ID later if needed */}
-      <PayPalScriptProvider options={{ "client-id": "AfL0AIZGKmKPAMJ99RVoCz5dX6DebPHGPQafSGwzzAVuZPfueqQWl5hZRaE9OW0lgaR6uJb39Tw3PUVt", currency: "PHP" }}>
+      <PayPalScriptProvider options={{ "client-id": clientId, currency: "PHP" }}>
         
         <h3 className="text-center font-bold mb-4 text-lg">
             Pay Amount: ₱{amount}

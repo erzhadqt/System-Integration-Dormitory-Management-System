@@ -36,7 +36,7 @@ function PaymentHistory() {
   return (
     <div className="min-h-screen p-6 bg-linear-to-br from-slate-900 via-blue-900 to-slate-900">
      
-      <Link to="/dashboard" className="flex text-white gap-2 items-center self-start mb-4 font-semibold hover:underline w-fit">
+      <Link to="/user-dashboard" className="flex text-white gap-2 items-center self-start mb-4 font-semibold hover:underline w-fit">
         <FaArrowLeft size={24} className='text-white'/> Back to Dashboard
       </Link>
 

@@ -52,11 +52,10 @@ function App() {
 
         {/* Tenants pages */}
         <Route path="/tenant-homepage" element={<ProtectedRoute><TenantHomepage /></ProtectedRoute>} />
-        <Route path="/tenant-homepage/:id" element={<ProtectedRoute><RoomDetail /></ProtectedRoute>} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
-        <Route path="/PaymentHistory" element={<ProtectedRoute><PaymentHistory /></ProtectedRoute>} />
+        <Route path="/user-dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/user-profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/user-payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
+        <Route path="/user-PaymentHistory" element={<ProtectedRoute><PaymentHistory /></ProtectedRoute>} />
         
 
         {/* Admin pages */}
