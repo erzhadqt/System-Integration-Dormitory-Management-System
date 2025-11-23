@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,15 +27,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'default-insecure-key-for-dev') 
+SECRET_KEY = os.getenv('SECRET_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",    
-    "localhost"
-]
+# ALLOWED_HOSTS = [
+#     "127.0.0.1",    
+#     "localhost"
+# ]
+
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
@@ -75,6 +78,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -108,8 +112,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
     }
 }
 
@@ -149,6 +157,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -158,7 +176,8 @@ PAYPAL_CLIENT_ID = os.getenv('PAYPAL_CLIENT_ID')
 PAYPAL_SECRET = os.getenv('PAYPAL_SECRET')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-]
+CORS_ALLOW_ALL_ORIGINS = False
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8000",
+# ]
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:5173').split(',')
