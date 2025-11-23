@@ -11,25 +11,32 @@ export const AuthProvider = ({ children }) => {
   });
 
   const logout = async () => {
+    // 1. Notify Backend (Optional but good for clean-up)
     try {
-      // OPTIONAL: notify backend
-      await api.post("/logout/", {}, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        }
-      });
+      const token = localStorage.getItem("access"); // Ensure you use the correct key name
+      if (token) {
+        await api.post("app/logout/", {}, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+      }
     } catch (error) {
-      console.log("Logout error (ignored):", error);
+      console.warn("Logout endpoint error:", error);
+      // We continue executing logout even if backend fails
     }
 
-    // Remove all auth-related data
-    localStorage.removeItem("token");
+    // 2. Clear Local Storage
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
     localStorage.removeItem("user");
+    // ... remove any other stored items like 'username', 'given_name'
 
+    // 3. Reset State
     setUser(null);
 
-    // Redirect to login
-    window.location.href = "/logout";
+    // 4. Redirect
+    window.location.href = "/";
   };
 
   return (

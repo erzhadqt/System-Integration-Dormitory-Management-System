@@ -282,3 +282,15 @@ class NotificationViewSet(viewsets.ModelViewSet):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
     permission_classes = [IsAuthenticated]
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            # In a stateless JWT setup, the token is simply discarded on the client side.
+            # If you were using a blacklist app, you would add the token to the blacklist here.
+            
+            return Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
