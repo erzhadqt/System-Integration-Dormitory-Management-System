@@ -5,16 +5,6 @@
 
 	import api from '../../api';
 
-	// Sample room data
-	// const sampleRooms = [
-	// { id: 1, name: "Room 1", type: "single", status: "Full", imagePath: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800" },
-	// { id: 2, name: "Room 2", type: "double", status: "Available", imagePath: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800" },
-	// { id: 3, name: "Room 3", type: "bedspacers", status: "Full", imagePath: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800" },
-	// { id: 4, name: "Room 4", type: "single", status: "Available", imagePath: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800" },
-	// { id: 5, name: "Room 5", type: "double", status: "Available", imagePath: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800" },
-	// { id: 6, name: "Room 6", type: "bedspacers", status: "Maintenance", imagePath: "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=800" },
-	// ];
-
 	const TenantHomepage = () => {
 	const navigate = useNavigate();
 

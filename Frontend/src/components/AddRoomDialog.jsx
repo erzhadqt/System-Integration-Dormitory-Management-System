@@ -188,6 +188,16 @@ export default function AddRoomDialog({ onSaved, children }) {
             />
           </div>
 
+          {/* <div className="grid gap-2">
+            <Label>Upload Image</Label>
+            <Input
+              type="file"
+              onChange={handleSubmit}
+              className="border p-2 rounded-md"
+            />
+          </div> */}
+          
+
           {/* Assign Boarders */}
           <div className="grid gap-2">
             <Label>Assign Boarders</Label>
