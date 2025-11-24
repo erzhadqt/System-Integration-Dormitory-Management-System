@@ -57,40 +57,40 @@ function Form({ route, method }) {
 
   return (
     <div
-      className="h-screen bg-cover bg-center relative flex"
+      className="min-h-screen bg-cover bg-center relative flex flex-col md:flex-row"
       style={{ backgroundImage: "url('/bg-picture7.jpg')" }}
     >
       {/* LEFT SECTION */}
-      <div className="absolute top-1/3 left-16 max-w-xl p-4">
-        <h1 className="text-6xl text-white font-extrabold mb-4">Welcome!</h1>
-        <p className="text-gray-200 font-semibold leading-relaxed text-lg">
+      <div className="relative md:absolute md:top-1/3 md:left-16 max-w-xl p-4 md:p-4 px-6 pt-20 md:pt-4">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl text-white font-extrabold mb-4">Welcome!</h1>
+        <p className="text-gray-200 font-semibold leading-relaxed text-base md:text-lg">
           Manage your dormitory experience with ease. Log in to access your
           account, monitor payments, and stay connected with the dorm community.
         </p>
       </div>
 
       {/* RIGHT FORM SECTION */}
-      <div className="ml-auto bg-white shadow-2xl min-h-screen w-full max-w-lg p-10 flex flex-col justify-center border-l border-blue-200 rounded-tl-3xl rounded-bl-3xl bg-linear-to-bl from-blue-50 to-blue-200">
-        <h2 className="text-3xl font-bold text-blue-700 mb-6 text-center">
+      <div className="md:ml-auto bg-white shadow-2xl min-h-screen w-full md:max-w-lg p-6 sm:p-8 md:p-10 flex flex-col justify-center md:border-l border-blue-200 md:rounded-tl-3xl md:rounded-bl-3xl bg-linear-to-bl from-blue-50 to-blue-200">
+        <h2 className="text-2xl sm:text-3xl font-bold text-blue-700 mb-6 text-center">
           {name}
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-3 ">
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
           <div className="flex flex-col gap-y-2">
-            <label className="font-bold">Username</label>
+            <label className="font-bold text-sm sm:text-base">Username</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Username"
-              className="font-semibold outline py-2 px-3 rounded border border-gray-300 focus:border-blue-500"
+              className="font-semibold outline py-2 px-3 rounded border border-gray-300 focus:border-blue-500 text-sm sm:text-base"
               required
             />
           </div>
 
           {method === "signup" && (
             <div className="flex flex-col gap-y-2">
-              <label className="font-bold">Email</label>
+              <label className="font-bold text-sm sm:text-base">Email</label>
               <input
                 type="email"
                 value={email}
@@ -103,7 +103,7 @@ function Form({ route, method }) {
           )}
 
           <div className="flex flex-col gap-y-2">
-            <label className="font-bold">Password</label>
+            <label className="font-bold text-sm sm:text-base">Password</label>
             <input
               type="password"
               name="password"
@@ -117,7 +117,7 @@ function Form({ route, method }) {
 
           {method === "signup" && (
             <div className="flex flex-col gap-y-2">
-              <label className="font-bold">Confirm Password</label>
+              <label className="font-bold text-sm sm:text-base">Confirm Password</label>
               <input
                 type="password"
                 name="confirmPassword"
@@ -134,14 +134,14 @@ function Form({ route, method }) {
 
           <button
             type="submit"
-            className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 rounded-lg transition-colors"
+            className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2.5 sm:py-3 rounded-lg transition-colors text-sm sm:text-base"
             // onClick={() => navigate("/tenant-homepage")}
           >
             {name}
           </button>
 
           {method === "login" ? (
-            <p className="text-center text-sm text-gray-700">
+            <p className="text-center text-xs sm:text-sm text-gray-700">
               Don’t have an account?{" "}
               <button
                 onClick={() => navigate("/signup")}
@@ -152,7 +152,7 @@ function Form({ route, method }) {
               </button>
             </p>
           ) : (
-            <p className="text-center text-sm text-gray-700">
+            <p className="text-center text-xs sm:text-sm text-gray-700">
               Already have an account?{" "}
               <button
                 onClick={() => navigate("/login")}
@@ -164,9 +164,9 @@ function Form({ route, method }) {
             </p>
           )}
 
-          <hr className="m-5"/>
+          <hr className="m-3 sm:m-5 border-sm border-gray-400"/>
 
-		  <p className="text-center text-md text-zinc-600">
+		  <p className="text-center text-sm sm:text-base text-zinc-600">
 			Or Signup with Google
 		  </p>
 

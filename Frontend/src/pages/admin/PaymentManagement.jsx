@@ -190,31 +190,31 @@ function Payment() {
   // UI
   // ---------------------------------------------------
   return (
-    <div className="min-h-screen bg-blue-50 p-6">
-      <h1 className="text-3xl font-bold text-blue-700 mb-6 text-center">
+    <div className="min-h-screen bg-blue-50 p-3 sm:p-4 md:p-6">
+      <h1 className="text-2xl sm:text-3xl font-bold text-blue-700 mb-4 sm:mb-6 text-center">
         Payment Management
       </h1>
 
       {/* SUMMARY + CHART */}
-      <div className="flex flex-col md:flex-row gap-6 mb-10">
+      <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 mb-6 sm:mb-10">
         {/* TOTAL */}
-        <div className="bg-white w-full md:w-1/3 p-6 rounded-xl shadow border">
-          <h2 className="text-xl font-semibold">Total Collected</h2>
-          <p className="text-4xl font-bold text-green-600 mt-3">
+        <div className="bg-white w-full lg:w-1/3 p-4 sm:p-6 rounded-xl shadow border">
+          <h2 className="text-lg sm:text-xl font-semibold">Total Collected</h2>
+          <p className="text-3xl sm:text-4xl font-bold text-green-600 mt-2 sm:mt-3">
             ₱{totalCollected.toLocaleString()}
           </p>
         </div>
 
         {/* CHART */}
-        <div className="bg-white w-full md:w-2/3 p-6 rounded-xl shadow border">
-          <h2 className="text-lg font-semibold mb-4 text-center">
+        <div className="bg-white w-full lg:w-2/3 p-4 sm:p-6 rounded-xl shadow border">
+          <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-center">
             Payment Overview ({selectedFilter})
           </h2>
-          <ResponsiveContainer width="100%" height={250}>
+          <ResponsiveContainer width="100%" height={200} className="sm:h-[250px]">
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
+              <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
               <Tooltip />
               <Bar dataKey="amount" fill="#2563eb" radius={[8, 8, 0, 0]} />
             </BarChart>
@@ -223,20 +223,20 @@ function Payment() {
       </div>
 
       {/* FILTERS */}
-      <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
         <input
           type="date"
           value={selectedDate}
           onChange={(e) => setSelectedDate(e.target.value)}
-          className="border rounded-lg p-2"
+          className="border rounded-lg p-2 w-full sm:w-auto text-sm sm:text-base"
         />
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 justify-center">
           {["Daily", "Weekly", "Monthly", "Yearly"].map((f) => (
             <button
               key={f}
               onClick={() => setSelectedFilter(f)}
-              className={`px-4 py-2 rounded-lg ${
+              className={`px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base ${
                 selectedFilter === f
                   ? "bg-blue-600 text-white"
                   : "bg-white text-blue-600 border border-blue-400"
@@ -249,67 +249,62 @@ function Payment() {
       </div>
 
       {/* TABLE */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto -mx-3 sm:mx-0">
         <table className="min-w-full bg-white border rounded-lg shadow">
           <thead className="bg-blue-600 text-white">
             <tr>
-              <th className="py-3 px-4 text-left">Tenant</th>
-              <th className="py-3 px-4 text-left">Room</th>
-              <th className="py-3 px-4 text-left">Type</th>
-              <th className="py-3 px-4 text-left">Amount (₱)</th>
-              <th className="py-3 px-4 text-left">Date Paid</th>
-              <th className="py-3 px-4 text-left">Due Date</th>
-              <th className="py-3 px-4 text-left">Status</th>
-              <th className="py-3 px-4 text-left">Method</th>
-              <th className="py-3 px-4 text-left">Action</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left text-xs sm:text-sm whitespace-nowrap">Tenant</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left text-xs sm:text-sm whitespace-nowrap">Room</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left text-xs sm:text-sm whitespace-nowrap">Type</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left text-xs sm:text-sm whitespace-nowrap">Amount (₱)</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left text-xs sm:text-sm whitespace-nowrap">Date Paid</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left text-xs sm:text-sm whitespace-nowrap">Due Date</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left text-xs sm:text-sm whitespace-nowrap">Status</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left text-xs sm:text-sm whitespace-nowrap">Method</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left text-xs sm:text-sm whitespace-nowrap">Action</th>
             </tr>
           </thead>
 
           <tbody>
             {mergedPayments.map((p, index) => (
               <tr key={p.id} className="border-b hover:bg-blue-50">
-                <td className="py-3 px-4">{p.tenantName}</td>
-                <td className="py-3 px-4">{p.roomNumber}</td>
-                <td className="py-3 px-4">{p.roomType}</td>
-                <td className="py-3 px-4">{p.rent.toLocaleString()}</td>
-                <td className="py-3 px-4">{new Date(p.date_paid).toLocaleDateString()}</td>
-                <td className="py-3 px-4">{p.dueDate}</td>
+                <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm whitespace-nowrap">{p.tenantName}</td>
+                <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm whitespace-nowrap">{p.roomNumber}</td>
+                <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm whitespace-nowrap">{p.roomType}</td>
+                <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm whitespace-nowrap">{p.rent.toLocaleString()}</td>
+                <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm whitespace-nowrap">{new Date(p.date_paid).toLocaleDateString()}</td>
+                <td className="py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm whitespace-nowrap">{p.dueDate}</td>
 
                 {/* Status */}
-                <td className="py-3 px-4">
-                  <span className={`px-2 py-1 rounded text-xs font-bold ${
+                <td className="py-2 sm:py-3 px-2 sm:px-4">
+                  <span className={`px-2 py-1 rounded text-xs font-bold whitespace-nowrap ${
                       p.status === 'Completed' ? 'bg-green-100 text-green-800' : 
                       p.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'
                   }`}>
                       {p.status}
                   </span>
-              </td>
+                </td>
 
                 {/* Method */}
-                <td className="py-3 px-4">
-                  <span className={`px-2 py-1 rounded text-xs font-bold ${
+                <td className="py-2 sm:py-3 px-2 sm:px-4">
+                  <span className={`px-2 py-1 rounded text-xs font-bold whitespace-nowrap ${
                       p.payment_method === 'PayPal' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
                   }`}>
                       {p.payment_method}
                   </span>
-              </td>
+                </td>
 
                 {/* Action */}
-                <td className="py-3 px-4">
-      {p.status === 'Pending' && (
-        <button
-          onClick={() => handleApprovePayment(p.id)}
-          className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm shadow mr-2"
-        >
-          Approve
-        </button>
-      )}
-      
-      {/* Keep your existing Edit logic if you want, or replace it */}
-      {/* <button className="text-gray-500 hover:text-blue-600">
-        Edit
-      </button> */}
-    </td>
+                <td className="py-2 sm:py-3 px-2 sm:px-4">
+                  {p.status === 'Pending' && (
+                    <button
+                      onClick={() => handleApprovePayment(p.id)}
+                      className="bg-green-600 hover:bg-green-700 text-white px-2 sm:px-3 py-1 rounded text-xs sm:text-sm shadow whitespace-nowrap"
+                    >
+                      Approve
+                    </button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
