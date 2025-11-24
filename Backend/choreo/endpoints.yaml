@@ -1,0 +1,8 @@
+version: 06.0.3
+
+endpoimts:
+  - name: "REST API"
+    port: 8000
+    type: REST
+    netoworkVisibility: Public
+    context: /
