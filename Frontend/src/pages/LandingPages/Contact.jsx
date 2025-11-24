@@ -45,7 +45,7 @@ const Contact = () => {
             
             {/* Facebook Card */}
             <a
-              href="https://facebook.com"
+              href="https://web.facebook.com/erzhadqt/"
               target="_blank"
               rel="noopener noreferrer"
               className="group backdrop-blur-md bg-white/10 hover:bg-white/15 border border-white/20 rounded-2xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300"
@@ -64,7 +64,7 @@ const Contact = () => {
 
             {/* Email Card */}
             <a
-              href="mailto:gentech2025@gmail.com"
+              href="mailto:erzhadqt22@gmail.com"
               className="group backdrop-blur-md bg-white/10 hover:bg-white/15 border border-white/20 rounded-2xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300"
             >
               <div className="flex flex-col items-center text-center">
