@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../api'; 
-import { User, Home, Calendar, CheckCircle, AlertCircle, LogOutIcon, BellIcon, ArrowBigLeftDashIcon, HistoryIcon } from 'lucide-react';
+import { User, Home, Calendar, CheckCircle, AlertCircle, LogOutIcon, ArrowBigLeftDashIcon, HistoryIcon } from 'lucide-react';
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from '../../context/AuthContext';
 
-// --- PHASE 3 IMPORTS ---
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import LogoutAlertDialog from '../../components/LogoutAlertDialog';
-import PayPalPayment from '../../pages//PayPal/PayPalPayment'; 
-// -----------------------
+import PayPalPayment from '../../pages/PayPal/PayPalPayment'; 
 
-function dashboard() {
+function Dashboard() {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
   // State
   const [boarderData, setBoarderData] = useState(null);
-  const [paymentStatus, setPaymentStatus] = useState("Loading..."); 
+  const [paymentStatus, setPaymentStatus] = useState("Loading...");   
   const [loading, setLoading] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState('paypal');
-  
-  // --- PHASE 3 STATE: Store the actual amount needed for payment ---
   const [balanceAmount, setBalanceAmount] = useState(0);
+
+  // NEW: State to control the Payment Modal
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  
+  // NEW: State for Cash Success Modal
+  const [showCashSuccessModal, setShowCashSuccessModal] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -30,17 +32,11 @@ function dashboard() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      
-      // 1. Fetch Boarder Info from the new ViewSet we created
       const res = await api.get("app/current-boarder/"); 
       const data = res.data;
-      
       setBoarderData(data);
-
-      // 2. Set Status directly from backend (Trust the backend logic!)
       setPaymentStatus(data.payment_status); 
       setBalanceAmount(data.due_amount);
-
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
       setPaymentStatus("Error");
@@ -54,6 +50,12 @@ function dashboard() {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
+  // Function called when Payment is totally finished (Receipt closed)
+  const handlePaymentComplete = () => {
+      setIsPaymentOpen(false); // Close the modal
+      fetchData(); // Refresh the dashboard data
   };
 
   return (
@@ -77,14 +79,12 @@ function dashboard() {
             <div className="flex items-center gap-4">
                 <button onClick={() => navigate('/user-PaymentHistory')} className="flex gap-1 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all relative">
                     <HistoryIcon className="w-6 h-6" />
-                    Payment History
-                    <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-slate-900"></span>
+                    <span className="hidden sm:block">Payment History</span>
                 </button>
                 
                 <LogoutAlertDialog onConfirm={logout}>
                     <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/20 hover:bg-red-500/30 text-red-200 border border-red-500/30 transition-all">
                         <LogOutIcon className="w-5 h-5" />
-                        <span className="hidden sm:inline">Logout</span>
                     </button>
                 </LogoutAlertDialog>
             </div>
@@ -146,21 +146,19 @@ function dashboard() {
                 </p>
             )}
 
-            {/* --- PHASE 3 INTEGRATION START --- */}
             <div className="mt-4">
               
               {/* IF UNPAID: Show Payment Options */}
               {paymentStatus === 'Unpaid' && (
-                <Dialog>
+                <Dialog open={isPaymentOpen} onOpenChange={setIsPaymentOpen}>
                   <DialogTrigger className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors shadow-lg">
-                    Pay Now (₱{balanceAmount.toLocaleString()})
+                    Pay Now (₱{parseFloat(balanceAmount).toLocaleString()})
                   </DialogTrigger>
                   
                   <DialogContent className="bg-white sm:max-w-md p-6">
                     <DialogTitle>
-                      <span className="text-xl font-bold text-gray-900 mb-4 text-center">Select Payment Method</span>
+                      <span className="text-xl font-bold text-gray-900 mb-4 text-center block">Select Payment Method</span>
                     </DialogTitle>
-                    
                     
                     {/* Toggle Buttons */}
                     <div className="flex gap-2 mb-6 justify-center">
@@ -180,12 +178,10 @@ function dashboard() {
 
                     {/* CONDITION 1: PAYPAL */}
                     {paymentMethod === 'paypal' && (
-                         <PayPalPayment 
+                          <PayPalPayment 
                             amount={balanceAmount} 
-                            onSuccess={() => {
-                                fetchData(); // Refresh data after success
-                            }} 
-                         />
+                            onSuccess={handlePaymentComplete} // Pass the closer function
+                          />
                     )}
 
                     {/* CONDITION 2: CASH */}
@@ -203,8 +199,9 @@ function dashboard() {
                                 onClick={async () => {
                                     try {
                                         await api.post('app/cash/request/', { amount: balanceAmount });
-                                        alert("Request sent! Please pay the landlord to complete the process.");
-                                        fetchData(); // Refresh to show 'Pending' status
+                                        setIsPaymentOpen(false); // Close the payment selector
+                                        setShowCashSuccessModal(true); // Open success modal
+                                        fetchData(); // Update background data
                                     } catch (err) {
                                         alert(err.response?.data?.error || "Error sending request");
                                     }
@@ -219,25 +216,24 @@ function dashboard() {
                 </Dialog>
               )}
 
-              {/* IF PENDING: Show Waiting Message */}
+              {/* IF PENDING */}
               {paymentStatus === 'Pending' && (
                 <div className="p-3 bg-yellow-500/20 border border-yellow-500/50 rounded-lg text-center">
                     <p className="text-yellow-200 font-bold text-sm">
-                       ⏳ Payment Pending Verification
+                        ⏳ Payment Pending Verification
                     </p>
                 </div>
               )}
 
-              {/* IF PAID: Show Success Message */}
+              {/* IF PAID */}
               {paymentStatus === 'Paid' && (
                 <div className="p-3 bg-green-500/20 border border-green-500/50 rounded-lg text-center">
                     <p className="text-green-300 font-bold text-sm">
-                       ✅ Rent Paid for this Month
+                        ✅ Rent Paid for this Month
                     </p>
                 </div>
               )}
             </div>
-            {/* --- PHASE 3 INTEGRATION END --- */}
 
           </div>
 
@@ -272,7 +268,6 @@ function dashboard() {
             <p className="text-4xl font-bold text-white mb-2">
               {loading ? "..." : (boarderData?.room_number || "No Room")}
             </p>
-            {/* Only show price if a room exists */}
             {boarderData?.room_number && (
                  <p className="text-blue-300 text-sm">
                     <span className="font-semibold">Price:</span> ₱{boarderData?.room_price || "0"} / month
@@ -281,9 +276,33 @@ function dashboard() {
           </div>
 
         </div>
+
+        {/* NEW: Cash Payment Success Modal */}
+        <Dialog open={showCashSuccessModal} onOpenChange={setShowCashSuccessModal}>
+            <DialogContent className="bg-white sm:max-w-md p-6 text-center">
+                <div className="flex justify-center mb-4">
+                    <div className="bg-green-100 p-3 rounded-full">
+                        <CheckCircle className="w-10 h-10 text-green-600" />
+                    </div>
+                </div>
+                <DialogTitle className="text-xl font-bold text-gray-900 mb-2 text-center">
+                    Request Sent Successfully!
+                </DialogTitle>
+                <p className="text-gray-600 mb-6 text-center">
+                    The landlord has been notified. Please visit the office and make the cash payment to finalize your transaction.
+                </p>
+                <button
+                    onClick={() => setShowCashSuccessModal(false)}
+                    className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors"
+                >
+                    Understood
+                </button>
+            </DialogContent>
+        </Dialog>
+
       </div>
     </div>
   );
 }
 
-export default dashboard;
+export default Dashboard;

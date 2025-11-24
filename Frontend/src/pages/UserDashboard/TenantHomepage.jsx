@@ -219,11 +219,8 @@ useEffect(() => {
 							{room.type}
 							</span>
 						</div>
-						<span className="flex gap-1 mb-1 text-gray-600">
-							Capacity: <p className="font-semibold text-black">{room.capacity}</p>
-						</span>
 						<span className="font-semibold text-lg">
-							₱ {room.price}
+							₱ {room.price} / Monthly
 						</span>
 						</div>
 

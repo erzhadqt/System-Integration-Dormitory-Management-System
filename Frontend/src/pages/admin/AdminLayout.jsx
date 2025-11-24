@@ -19,8 +19,8 @@ function AdminLayout() {
     { name: "Tenants", path: "/admin-dashboard/addtenant" },
     { name: "Rooms", path: "/admin-dashboard/rooms" },
     { name: "Payments", path: "/admin-dashboard/payments" },
-    { name: "Send Reminder", path: "/admin-dashboard/sendreminder" },
-    { name: "CMS", path: "/admin-dashboard/cms" },
+    // { name: "Send Reminder", path: "/admin-dashboard/sendreminder" },
+    // { name: "CMS", path: "/admin-dashboard/cms" },
   ];
 
   return (

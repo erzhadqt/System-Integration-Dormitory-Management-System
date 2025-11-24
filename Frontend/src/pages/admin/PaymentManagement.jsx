@@ -68,7 +68,7 @@ function Payment() {
     return {
       ...p,
       tenantName: boarder
-        ? `${boarder.first_name} ${boarder.last_name}`
+        ? `${boarder.username}`
         : "Unknown",
       roomNumber: room?.room_number || "-",
       roomType: room?.room_type || "-",
@@ -257,7 +257,8 @@ function Payment() {
               <th className="py-3 px-4 text-left">Room</th>
               <th className="py-3 px-4 text-left">Type</th>
               <th className="py-3 px-4 text-left">Amount (₱)</th>
-              <th className="py-3 px-4 text-left">Date Paid / Due</th>
+              <th className="py-3 px-4 text-left">Date Paid</th>
+              <th className="py-3 px-4 text-left">Due Date</th>
               <th className="py-3 px-4 text-left">Status</th>
               <th className="py-3 px-4 text-left">Method</th>
               <th className="py-3 px-4 text-left">Action</th>
@@ -271,7 +272,8 @@ function Payment() {
                 <td className="py-3 px-4">{p.roomNumber}</td>
                 <td className="py-3 px-4">{p.roomType}</td>
                 <td className="py-3 px-4">{p.rent.toLocaleString()}</td>
-                <td className="py-3 px-4">{new Date(p.date_paid).toLocaleDateString()} / {p.dueDate}</td>
+                <td className="py-3 px-4">{new Date(p.date_paid).toLocaleDateString()}</td>
+                <td className="py-3 px-4">{p.dueDate}</td>
 
                 {/* Status */}
                 <td className="py-3 px-4">

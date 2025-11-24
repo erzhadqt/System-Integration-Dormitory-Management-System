@@ -60,6 +60,7 @@ function PaymentHistory() {
                   <th className="p-3 text-left">Date</th>
                   <th className="p-3 text-left">Method</th>
                   <th className="p-3 text-left">Amount</th>
+                  <th className="p-3 text-left">Transaction ID</th>
                   <th className="p-3 text-center">Status</th>
                 </tr>
               </thead>
@@ -80,6 +81,10 @@ function PaymentHistory() {
                     {/* Amount Column */}
                     <td className="p-3 text-white font-bold">
                         ₱{parseFloat(payment.amount).toLocaleString()}
+                    </td>
+
+                    <td className="p-3 text-white font-bold">
+                        {payment.transaction_id}
                     </td>
 
                     {/* Status Column */}
