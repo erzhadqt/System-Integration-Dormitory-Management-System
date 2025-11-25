@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../../api'; 
 import { User, Home, Calendar, CheckCircle, AlertCircle, LogOutIcon, ArrowBigLeftDashIcon, HistoryIcon } from 'lucide-react';
 import { NavLink, useNavigate } from "react-router-dom";
@@ -6,7 +6,8 @@ import { useAuth } from '../../context/AuthContext';
 
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import LogoutAlertDialog from '../../components/LogoutAlertDialog';
-import PayPalPayment from '../../pages/PayPal/PayPalPayment'; 
+import PayPalPayment from '../../pages/PayPal/PayPalPayment';
+
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -56,7 +57,10 @@ function Dashboard() {
   const handlePaymentComplete = () => {
       setIsPaymentOpen(false); // Close the modal
       fetchData(); // Refresh the dashboard data
+
   };
+
+  
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">

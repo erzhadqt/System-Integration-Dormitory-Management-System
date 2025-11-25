@@ -4,21 +4,42 @@ import api from "../../api";
 import { CheckCircle, Receipt, Calendar, CreditCard, User } from "lucide-react";
 import { Button } from "@/components/ui/button"; // Assuming you have shadcn button, or use standard html button
 
+import emailjs from '@emailjs/browser';
+
 export default function PayPalPayment({ amount, onSuccess }) {
   // State to store transaction details after success
   const [paymentSuccess, setPaymentSuccess] = useState(null);
-  const [cashRequest, setCashRequest] = useState(null);
   const [error, setError] = useState(null);
 
   const handleApprove = async (data, actions) => {
     return actions.order.capture().then(async (details) => {
       console.log("Payment Completed by: " + details.payer.name.given_name);
 
+  const serviceID = import.meta.env.VITE_SERVICE_ID;
+  const emailTemplate = import.meta.env.VITE_EMAIL_TEMPLATE_ID;
+  const publicKey = import.meta.env.VITE_PUBLIC_KEY;
+
+  
+
       try {
         await api.post("/app/paypal/success/", {
           amount: amount,
           transaction_id: details.id,
         });
+
+        const receiptInfos = {
+          subject: "Online Payment Thru PayPal",
+          username: details.payer.name.given_name + " " + details.payer.name.surname,
+          transactionId: details.id,
+          payerName: details.payer.name.given_name + " " + details.payer.name.surname,
+          date: new Date().toLocaleString(),
+          amount: amount,
+          status: "COMPLETED",
+        }
+        
+        const emailSend = () => {
+            emailjs.send(serviceID, emailTemplate, receiptInfos, publicKey);
+        }
 
         // INSTEAD OF ALERT, SET SUCCESS STATE
         setPaymentSuccess({
@@ -28,6 +49,7 @@ export default function PayPalPayment({ amount, onSuccess }) {
           amount: amount,
           status: "COMPLETED"
         });
+        emailSend();
 
       } catch (error) {
         console.error("Backend error:", error);
