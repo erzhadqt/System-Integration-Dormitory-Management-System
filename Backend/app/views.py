@@ -160,7 +160,7 @@ class CurrentBoarderViewSet(viewsets.ViewSet):
             "payment_status": status,
             "due_amount": balance,
             "due_date": boarder.room.due_date,
-            "guardian_contact": boarder.guardian_contact
+            "guardian_contact": boarder.guardian_contact,
         })
         
     @action(detail=False, methods=['get', 'patch'])
@@ -240,7 +240,8 @@ class PayPalSuccessView(APIView):
                 status='Completed',
                 transaction_id=transaction_id
             )
-            return Response({"message": "Payment Recorded Successfully"})
+            username = boarder.username
+            return Response({"message": "Payment Recorded Successfully", 'username': username})
         except Boarder.DoesNotExist:
             return Response({"error": "Boarder not found"}, status=404)
 

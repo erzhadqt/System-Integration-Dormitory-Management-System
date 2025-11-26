@@ -22,16 +22,17 @@ export default function PayPalPayment({ amount, onSuccess }) {
   
 
       try {
-        await api.post("/app/paypal/success/", {
+        const res = await api.post("/app/paypal/success/", {
           amount: amount,
           transaction_id: details.id,
         });
 
+        const username = res.data.username;
         const receiptInfos = {
           subject: "Online Payment Thru PayPal",
           username: details.payer.name.given_name + " " + details.payer.name.surname,
           transactionId: details.id,
-          payerName: details.payer.name.given_name + " " + details.payer.name.surname,
+          payerName: username,
           date: new Date().toLocaleString(),
           amount: amount,
           status: "COMPLETED",
