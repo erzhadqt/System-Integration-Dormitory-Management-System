@@ -114,7 +114,7 @@ function Profile() {
                 <h1 className="text-2xl font-bold text-white">Profile Details</h1>
                 <button 
                     onClick={() => isEditing ? handleSave() : setIsEditing(true)}
-                    className={`px-6 py-2 rounded-xl font-semibold transition-all ${
+                    className={`cursor-pointer px-6 py-2 rounded-xl font-semibold transition-all ${
                         isEditing 
                         ? "bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-500/30" 
                         : "bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30"

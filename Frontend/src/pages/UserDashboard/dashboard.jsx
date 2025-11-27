@@ -81,13 +81,13 @@ function Dashboard() {
             </div>
 
             <div className="flex items-center gap-4">
-                <button onClick={() => navigate('/user-PaymentHistory')} className="flex gap-1 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all relative">
+                <button onClick={() => navigate('/user-PaymentHistory')} className="cursor-pointer flex gap-1 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all relative">
                     <HistoryIcon className="w-6 h-6" />
                     <span className="hidden sm:block">Payment History</span>
                 </button>
                 
                 <LogoutAlertDialog onConfirm={logout}>
-                    <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/20 hover:bg-red-500/30 text-red-200 border border-red-500/30 transition-all">
+                    <button className="cursor-pointer flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/20 hover:bg-red-500/50 text-red-200 border border-red-500/30 transition-all">
                         <LogOutIcon className="w-5 h-5" />
                     </button>
                 </LogoutAlertDialog>
@@ -155,7 +155,7 @@ function Dashboard() {
               {/* IF UNPAID: Show Payment Options */}
               {paymentStatus === 'Unpaid' && (
                 <Dialog open={isPaymentOpen} onOpenChange={setIsPaymentOpen}>
-                  <DialogTrigger className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors shadow-lg">
+                  <DialogTrigger className="cursor-pointer w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors shadow-lg">
                     Pay Now (₱{parseFloat(balanceAmount).toLocaleString()})
                   </DialogTrigger>
                   

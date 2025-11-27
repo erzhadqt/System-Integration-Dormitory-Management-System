@@ -51,7 +51,7 @@ function AdminLayout() {
 
         <div className="mt-4 sm:mt-6">
           <LogoutAlertDialog onConfirm={logout}>
-            <button className="w-full bg-white text-sky-700 rounded-lg py-2 font-semibold hover:bg-gray-200 transition">
+            <button className="cursor-pointer w-full bg-white text-sky-700 rounded-lg py-2 font-semibold hover:bg-gray-300 transition">
               Logout
             </button>
           </LogoutAlertDialog>

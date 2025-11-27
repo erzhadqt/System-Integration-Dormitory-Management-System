@@ -150,7 +150,7 @@ const About = () => {
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6">
               Ready to Transform Your Dorm Management?
             </h2>
-            <button onClick={() => navigate('/signup')} className="group bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 mx-auto">
+            <button onClick={() => navigate('/signup')} className="cursor-pointer group bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 mx-auto">
               Get Started Today
               <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
             </button>

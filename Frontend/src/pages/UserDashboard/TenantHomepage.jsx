@@ -66,8 +66,8 @@ useEffect(() => {
 			</div>
 
 			<div className="float-right">
-				<button onClick={() => navigate('/user-dashboard')} className="bg-blue-700 hover:bg-blue-400 text-white text-md px-3 py-3 rounded-full font-semibold flex gap-2 ">
-				<FaUser className="w-7 h-7 text-gray-800" />
+				<button onClick={() => navigate('/user-dashboard')} className="bg-white hover:bg-linear-to-r from-blue-600 to-blue-800 px-3 py-3 rounded-full ">
+				<FaUser className="w-6 h-6 text-gray-800" />
 				</button>
 			</div>
 		</div>

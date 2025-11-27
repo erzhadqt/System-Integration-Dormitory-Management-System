@@ -55,7 +55,7 @@ function AddTenants() {
         <h1 className="text-2xl sm:text-3xl font-bold text-sky-700">Tenants</h1>
 
         <AddBoarderDialog onSaved={onOperationSuccess}>
-          <button className="flex gap-2 items-center text-sm sm:text-base bg-sky-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-sky-700 transition">
+          <button className="cursor-pointer flex gap-2 items-center text-sm sm:text-base bg-sky-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-sky-700 transition">
             <PlusSquare className="w-4 h-4 sm:w-5 sm:h-5" />
             Tenant
           </button>
@@ -96,7 +96,7 @@ function AddTenants() {
                   <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">{t.guardian_contact}</td>
                   <td className="p-2 sm:p-3 md:p-4 flex gap-1 sm:gap-2">
                     <EditBoarderDialog boarder={t} onSaved={onOperationSuccess}>
-                      <button className="text-green-600 hover:underline"><Edit className="w-4 h-4 sm:w-5 sm:h-5" /></button>
+                      <button className="cursor-pointer text-green-600 hover:underline"><Edit className="w-4 h-4 sm:w-5 sm:h-5" /></button>
                     </EditBoarderDialog>
 
                     <DeleteConfirmDialog onConfirm={() => deleteTenant(t.id)}>

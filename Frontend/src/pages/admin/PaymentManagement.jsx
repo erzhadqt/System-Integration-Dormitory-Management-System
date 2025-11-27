@@ -198,7 +198,7 @@ function Payment() {
       {/* SUMMARY + CHART */}
       <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 mb-6 sm:mb-10">
         {/* TOTAL */}
-        <div className="bg-white w-full lg:w-1/3 p-4 sm:p-6 rounded-xl shadow border">
+        <div className="bg-white w-full lg:w-1/3 p-4 sm:p-6 rounded-xl shadow border flex flex-col justify-center items-center">
           <h2 className="text-lg sm:text-xl font-semibold">Total Collected</h2>
           <p className="text-3xl sm:text-4xl font-bold text-green-600 mt-2 sm:mt-3">
             ₱{totalCollected.toLocaleString()}
@@ -228,7 +228,7 @@ function Payment() {
           type="date"
           value={selectedDate}
           onChange={(e) => setSelectedDate(e.target.value)}
-          className="border rounded-lg p-2 w-full sm:w-auto text-sm sm:text-base"
+          className="cursor-pointer border rounded-lg p-2 w-full sm:w-auto text-sm sm:text-base"
         />
 
         <div className="flex flex-wrap gap-2 justify-center">
@@ -236,7 +236,7 @@ function Payment() {
             <button
               key={f}
               onClick={() => setSelectedFilter(f)}
-              className={`px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base ${
+              className={`cursor-pointer px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base ${
                 selectedFilter === f
                   ? "bg-blue-600 text-white"
                   : "bg-white text-blue-600 border border-blue-400"
@@ -299,7 +299,7 @@ function Payment() {
                   {p.status === 'Pending' && (
                     <button
                       onClick={() => handleApprovePayment(p.id)}
-                      className="bg-green-600 hover:bg-green-700 text-white px-2 sm:px-3 py-1 rounded text-xs sm:text-sm shadow whitespace-nowrap"
+                      className="cursor-pointer bg-green-600 hover:bg-green-700 text-white px-2 sm:px-3 py-1 rounded text-xs sm:text-sm shadow whitespace-nowrap"
                     >
                       Approve
                     </button>

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import api from "../api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+
+import { ArrowLeftCircle } from 'lucide-react';
 
 import GoogleAuth from "../pages/GoogleAuth";
 
@@ -84,7 +86,7 @@ function Form({ route, method }) {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Username"
               className="font-semibold outline py-2 px-3 rounded border border-gray-300 focus:border-blue-500 text-sm sm:text-base"
-              required
+              required autoSave="false"
             />
           </div>
 
@@ -134,7 +136,7 @@ function Form({ route, method }) {
 
           <button
             type="submit"
-            className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2.5 sm:py-3 rounded-lg transition-colors text-sm sm:text-base"
+            className="cursor-pointer w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2.5 sm:py-3 rounded-lg transition-colors text-sm sm:text-base"
             // onClick={() => navigate("/tenant-homepage")}
           >
             {name}
@@ -146,7 +148,7 @@ function Form({ route, method }) {
               <button
                 onClick={() => navigate("/signup")}
                 type="button"
-                className="text-blue-700 font-medium hover:underline"
+                className="cursor-pointer text-blue-700 font-medium hover:underline"
               >
                 Sign Up
               </button>
@@ -157,7 +159,7 @@ function Form({ route, method }) {
               <button
                 onClick={() => navigate("/login")}
                 type="button"
-                className="text-blue-700 font-medium hover:underline"
+                className="cursor-pointer text-blue-700 font-medium hover:underline"
               >
                 Log In
               </button>
@@ -174,6 +176,10 @@ function Form({ route, method }) {
             
             <GoogleAuth />
           </div>
+
+          <Link to="/" className="flex gap-2 absolute bottom-5">
+            <ArrowLeftCircle /> Go back
+          </Link>
         </form>
       </div>
     </div>
