@@ -29,7 +29,7 @@ const LandingPage = () => {
         <div className="max-w-5xl mx-auto text-center">
           
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500/20 backdrop-blur-sm border border-blue-400/30 rounded-full text-blue-300 text-xs sm:text-sm font-semibold mb-6 sm:mb-8 animate-fade-in">
+          <div className="mt-16 inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500/20 backdrop-blur-sm border border-blue-400/30 rounded-full text-blue-300 text-xs sm:text-sm font-semibold mb-6 sm:mb-8 animate-fade-in">
             <Zap className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="hidden xs:inline">Modern Dorm Management Solution</span>
             <span className="xs:hidden">Dorm Management</span>
