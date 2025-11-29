@@ -98,7 +98,7 @@ function Dashboard() {
         <div className="mb-8">
           <div className="backdrop-blur-md bg-white/10 rounded-3xl border border-white/20 shadow-2xl p-6 sm:p-8">
             <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2 drop-shadow-lg">
-              Welcome Back, <span className="text-zinc-200">
+              Welcome, <span className="text-zinc-200">
                 {loading ? "..." : (boarderData?.username || boarderData?.email || "User")}!
               </span>
             </h1>
